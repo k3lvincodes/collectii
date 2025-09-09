@@ -40,39 +40,41 @@ export default function AnnouncementsPage() {
     <>
       <AppHeader />
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-lg font-semibold md:text-2xl font-headline">Announcements</h1>
-          <Button><PlusCircle className="mr-2 h-4 w-4"/> Post Announcement</Button>
-        </div>
+        <div className="container px-0">
+          <div className="flex items-center justify-between">
+            <h1 className="text-lg font-semibold md:text-2xl font-headline">Announcements</h1>
+            <Button><PlusCircle className="mr-2 h-4 w-4"/> Post Announcement</Button>
+          </div>
 
-        <div className="space-y-6">
-            {announcements.map((post, index) => (
-                <Card key={index}>
-                    <CardHeader>
-                        <div className="flex justify-between items-start">
-                            <div>
-                                <CardTitle className="text-xl font-headline">{post.title}</CardTitle>
-                                <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
-                                    <Avatar className="h-6 w-6">
-                                        <AvatarImage src={post.avatar} />
-                                        <AvatarFallback>{post.author.charAt(0)}</AvatarFallback>
-                                    </Avatar>
-                                    <span>{post.author}</span>
-                                    <span>&bull;</span>
-                                    <Badge variant="secondary">{post.group}</Badge>
-                                </div>
-                            </div>
-                            {post.pinned && <Pin className="h-5 w-5 text-primary" />}
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-muted-foreground">{post.content}</p>
-                    </CardContent>
-                    <CardFooter>
-                        <p className="text-xs text-muted-foreground">{post.date}</p>
-                    </CardFooter>
-                </Card>
-            ))}
+          <div className="space-y-6 mt-6">
+              {announcements.map((post, index) => (
+                  <Card key={index}>
+                      <CardHeader>
+                          <div className="flex justify-between items-start">
+                              <div>
+                                  <CardTitle className="text-xl font-headline">{post.title}</CardTitle>
+                                  <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                                      <Avatar className="h-6 w-6">
+                                          <AvatarImage src={post.avatar} />
+                                          <AvatarFallback>{post.author.charAt(0)}</AvatarFallback>
+                                      </Avatar>
+                                      <span>{post.author}</span>
+                                      <span>&bull;</span>
+                                      <Badge variant="secondary">{post.group}</Badge>
+                                  </div>
+                              </div>
+                              {post.pinned && <Pin className="h-5 w-5 text-primary" />}
+                          </div>
+                      </CardHeader>
+                      <CardContent>
+                          <p className="text-muted-foreground">{post.content}</p>
+                      </CardContent>
+                      <CardFooter>
+                          <p className="text-xs text-muted-foreground">{post.date}</p>
+                      </CardFooter>
+                  </Card>
+              ))}
+          </div>
         </div>
       </main>
     </>
