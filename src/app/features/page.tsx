@@ -2,6 +2,7 @@ import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { Blocks, Users, BarChart, Zap } from 'lucide-react';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 const features = [
   {
