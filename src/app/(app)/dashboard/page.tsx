@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from "@/components/ui/button";
 import { AppHeader } from "@/components/app-header";
 import {
