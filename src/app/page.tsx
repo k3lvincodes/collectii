@@ -82,7 +82,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="features" className="py-20 relative">
+        <section id="features" className="py-20 relative bg-transparent">
           <div className="container relative z-20">
             <div className="grid md:grid-cols-3 gap-8">
               {features.map((feature, index) => (
@@ -135,7 +135,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-20 overflow-hidden relative">
+        <section className="py-20 overflow-hidden relative bg-transparent">
           <div className="container relative z-20">
              <div className="relative mx-auto w-full max-w-4xl">
                 <div className="relative z-10 border-foreground/20 bg-foreground/10 border-8 rounded-t-xl shadow-2xl aspect-video">
@@ -162,7 +162,7 @@ export default function Home() {
           </div>
         </section>
 
-         <section className="py-20 text-center relative">
+         <section className="py-20 text-center relative bg-transparent">
           <div className="container max-w-3xl relative z-20">
             <h2 className="font-headline text-3xl md:text-4xl font-bold mb-4">Works seamlessly with the tools you already use.</h2>
             <p className="text-muted-foreground mb-8">Connect your favorite apps to make Collectii your central hub for productivity.</p>
@@ -204,7 +204,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-20 text-center relative overflow-hidden">
+        <section className="py-20 text-center relative overflow-hidden bg-transparent">
           <div className="container relative z-20">
             <h2 className="font-headline text-3xl md:text-4xl font-bold mb-4">Start building for free with your team today.</h2>
             <Button asChild size="lg">
