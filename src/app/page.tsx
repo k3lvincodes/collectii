@@ -1,4 +1,5 @@
 
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -15,6 +16,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import placeholderImages from '@/lib/placeholder-images.json';
+import { DecorativeShapes } from '@/components/decorative-shapes';
 
 
 const features = [
@@ -61,6 +63,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <SiteHeader />
       <main className="flex-1">
+      <DecorativeShapes />
         <section className="relative min-h-screen flex items-center justify-center text-center px-4">
           <div
             aria-hidden="true"
