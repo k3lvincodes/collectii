@@ -1,11 +1,10 @@
 
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, CheckCircle, Users, BarChart3, ListChecks, UsersRound, GanttChartSquare } from 'lucide-react';
+import { ArrowRight, ListChecks, UsersRound, GanttChartSquare } from 'lucide-react';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import {
@@ -64,13 +63,7 @@ export default function Home() {
       <SiteHeader />
       <main className="flex-1">
       <DecorativeShapes />
-        <section className="relative min-h-screen flex items-center justify-center text-center px-4">
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 z-0 h-full w-full bg-background"
-          >
-             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
-          </div>
+        <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden">
           <div className="container relative z-20">
             <h1 className="font-headline text-4xl md:text-6xl font-bold tracking-tighter mb-4">
               Collectii helps teams get more done together
@@ -89,8 +82,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="features" className="py-20 relative z-20">
-          <div className="container">
+        <section id="features" className="py-20 relative">
+          <div className="container relative z-20">
             <div className="grid md:grid-cols-3 gap-8">
               {features.map((feature, index) => (
                 <Card key={index} className="bg-card/50 backdrop-blur-sm border-border/20 text-center">
@@ -107,8 +100,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-20 bg-muted/20 relative z-20">
-          <div className="container text-center">
+        <section className="py-20 bg-transparent relative">
+          <div className="container text-center relative z-20">
             <h2 className="font-headline text-3xl md:text-4xl font-bold mb-16">How It Works</h2>
             <div className="relative max-w-2xl mx-auto">
                 <div className="absolute left-1/2 top-0 bottom-0 w-px bg-border -translate-x-1/2"></div>
@@ -142,8 +135,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-20 overflow-hidden relative z-20">
-          <div className="container">
+        <section className="py-20 overflow-hidden relative">
+          <div className="container relative z-20">
              <div className="relative mx-auto w-full max-w-4xl">
                 <div className="relative z-10 border-foreground/20 bg-foreground/10 border-8 rounded-t-xl shadow-2xl aspect-video">
                   <Image
@@ -169,8 +162,8 @@ export default function Home() {
           </div>
         </section>
 
-         <section className="py-20 text-center relative z-20">
-          <div className="container max-w-3xl">
+         <section className="py-20 text-center relative">
+          <div className="container max-w-3xl relative z-20">
             <h2 className="font-headline text-3xl md:text-4xl font-bold mb-4">Works seamlessly with the tools you already use.</h2>
             <p className="text-muted-foreground mb-8">Connect your favorite apps to make Collectii your central hub for productivity.</p>
             <div className="flex justify-center items-center gap-12">
@@ -180,8 +173,8 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-20 bg-muted/20 relative z-20">
-          <div className="container">
+        <section className="py-20 bg-transparent relative">
+          <div className="container relative z-20">
             <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">Loved by Beta Users</h2>
             <Carousel opts={{ loop: true, align: "start" }} className="w-full max-w-4xl mx-auto">
               <CarouselContent>
@@ -211,20 +204,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-20 text-center relative">
-           <div
-            aria-hidden="true"
-            className="absolute inset-0 z-0 h-full w-full bg-background"
-          >
-             <Image 
-              src={placeholderImages.ctaBackground.src}
-              alt="Abstract background"
-              fill
-              className="object-cover opacity-5"
-              data-ai-hint={placeholderImages.ctaBackground.hint}
-             />
-             <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background"></div>
-          </div>
+        <section className="py-20 text-center relative overflow-hidden">
           <div className="container relative z-20">
             <h2 className="font-headline text-3xl md:text-4xl font-bold mb-4">Start building for free with your team today.</h2>
             <Button asChild size="lg">
