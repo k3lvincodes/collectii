@@ -71,7 +71,7 @@ export default function Home() {
           >
              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
           </div>
-          <div className="container relative z-10">
+          <div className="container relative z-20">
             <h1 className="font-headline text-4xl md:text-6xl font-bold tracking-tighter mb-4">
               Collectii helps teams get more done together
             </h1>
@@ -89,7 +89,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="features" className="py-20">
+        <section id="features" className="py-20 relative z-20">
           <div className="container">
             <div className="grid md:grid-cols-3 gap-8">
               {features.map((feature, index) => (
@@ -107,7 +107,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-20 bg-muted/20">
+        <section className="py-20 bg-muted/20 relative z-20">
           <div className="container text-center">
             <h2 className="font-headline text-3xl md:text-4xl font-bold mb-16">How It Works</h2>
             <div className="relative max-w-2xl mx-auto">
@@ -142,7 +142,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-20 overflow-hidden">
+        <section className="py-20 overflow-hidden relative z-20">
           <div className="container">
              <div className="relative mx-auto w-full max-w-4xl">
                 <div className="relative z-10 border-foreground/20 bg-foreground/10 border-8 rounded-t-xl shadow-2xl aspect-video">
@@ -169,7 +169,7 @@ export default function Home() {
           </div>
         </section>
 
-         <section className="py-20 text-center">
+         <section className="py-20 text-center relative z-20">
           <div className="container max-w-3xl">
             <h2 className="font-headline text-3xl md:text-4xl font-bold mb-4">Works seamlessly with the tools you already use.</h2>
             <p className="text-muted-foreground mb-8">Connect your favorite apps to make Collectii your central hub for productivity.</p>
@@ -180,7 +180,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="py-20 bg-muted/20">
+        <section className="py-20 bg-muted/20 relative z-20">
           <div className="container">
             <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">Loved by Beta Users</h2>
             <Carousel opts={{ loop: true, align: "start" }} className="w-full max-w-4xl mx-auto">
@@ -225,7 +225,7 @@ export default function Home() {
              />
              <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background"></div>
           </div>
-          <div className="container relative">
+          <div className="container relative z-20">
             <h2 className="font-headline text-3xl md:text-4xl font-bold mb-4">Start building for free with your team today.</h2>
             <Button asChild size="lg">
               <Link href="/get-started">Get Early Access <ArrowRight className="ml-2 h-5 w-5" /></Link>

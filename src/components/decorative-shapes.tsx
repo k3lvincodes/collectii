@@ -4,14 +4,14 @@
 import { cn } from "@/lib/utils";
 
 const Shape = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-    <div className={cn("absolute -z-10 opacity-70 dark:opacity-30", className)} {...props}>
+    <div className={cn("absolute opacity-70 dark:opacity-30", className)} {...props}>
         {children}
     </div>
 );
 
 export function DecorativeShapes() {
     return (
-        <div aria-hidden="true" className="absolute inset-0 overflow-hidden -z-10">
+        <div aria-hidden="true" className="absolute inset-0 overflow-hidden z-10">
             {/* Shape 1: Filled Circle (teal) */}
             <Shape className="w-32 h-32 top-1/4 left-[-4rem]">
                 <div className="w-full h-full rounded-full bg-[#2EC4B6]" />
