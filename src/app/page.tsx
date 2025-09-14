@@ -66,13 +66,6 @@ export default function Home() {
             aria-hidden="true"
             className="absolute inset-0 z-0 h-full w-full bg-background"
           >
-             <Image 
-              src={placeholderImages.heroBackground.src}
-              alt="Abstract background"
-              fill
-              className="object-cover opacity-5"
-              data-ai-hint={placeholderImages.heroBackground.hint}
-             />
              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
           </div>
           <div className="container relative z-10">
