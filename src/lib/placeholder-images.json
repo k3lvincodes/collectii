@@ -1,0 +1,31 @@
+
+{
+  "heroBackground": {
+    "src": "https://picsum.photos/seed/hero/1920/1080",
+    "hint": "abstract background"
+  },
+  "laptopMockup": {
+    "src": "https://picsum.photos/seed/laptop/1200/800",
+    "hint": "dashboard analytics"
+  },
+  "mobileMockup": {
+    "src": "https://picsum.photos/seed/mobile/450/950",
+    "hint": "task list"
+  },
+  "testimonial1": {
+    "src": "https://i.pravatar.cc/150?u=a042581f4e29026704d",
+    "hint": "person portrait"
+  },
+  "testimonial2": {
+    "src": "https://i.pravatar.cc/150?u=a042581f4e29026704e",
+    "hint": "person portrait"
+  },
+  "testimonial3": {
+    "src": "https://i.pravatar.cc/150?u=a042581f4e29026704f",
+    "hint": "person portrait"
+  },
+  "ctaBackground": {
+    "src": "https://picsum.photos/seed/cta/1920/1080",
+    "hint": "abstract texture"
+  }
+}
