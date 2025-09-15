@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import Link from "next/link";
@@ -37,6 +38,12 @@ const navItems = [
   { href: '/announcements', icon: Megaphone, label: 'Announcements' },
   { href: '/settings', icon: Settings, label: 'Settings' },
 ];
+
+const notifications = [
+    { title: "New task assigned", description: "Design new homepage mockups", time: "2m ago" },
+    { title: "Team Mention", description: "@channel in #marketing", time: "1h ago" },
+    { title: "Reminder", description: "Project 'Q4 Launch' is due tomorrow", time: "1d ago" },
+]
 
 export function AppHeader() {
   return (
@@ -88,10 +95,25 @@ export function AppHeader() {
           </form>
         </div>
         <ThemeToggle />
-        <Button variant="outline" size="icon" className="h-8 w-8">
-              <Bell className="h-4 w-4" />
-              <span className="sr-only">Toggle notifications</span>
-          </Button>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon" className="h-8 w-8">
+                    <Bell className="h-4 w-4" />
+                    <span className="sr-only">Toggle notifications</span>
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-[300px]">
+                <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {notifications.map((notification, index) => (
+                    <DropdownMenuItem key={index} className="flex flex-col items-start gap-1">
+                        <div className="font-semibold">{notification.title}</div>
+                        <div className="text-xs text-muted-foreground">{notification.description}</div>
+                        <div className="text-xs text-muted-foreground/70">{notification.time}</div>
+                    </DropdownMenuItem>
+                ))}
+            </DropdownMenuContent>
+        </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="secondary" size="icon" className="rounded-full">
