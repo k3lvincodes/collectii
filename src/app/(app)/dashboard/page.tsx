@@ -74,7 +74,7 @@ export default function DashboardPage() {
                 <CardTitle className="text-sm font-medium">
                   Total Tasks
                 </CardTitle>
-                <ListTodo className="h-4 w-4 text-muted-foreground" />
+                <ListTodo className="h-4 w-4 text-primary" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">951</div>
@@ -88,7 +88,7 @@ export default function DashboardPage() {
                 <CardTitle className="text-sm font-medium">
                   Active Teams
                 </CardTitle>
-                <UsersRound className="h-4 w-4 text-muted-foreground" />
+                <UsersRound className="h-4 w-4 text-primary" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">12</div>
@@ -100,7 +100,7 @@ export default function DashboardPage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Overdue Tasks</CardTitle>
-                <Bell className="h-4 w-4 text-muted-foreground" />
+                <Bell className="h-4 w-4 text-primary" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">50</div>
@@ -114,7 +114,7 @@ export default function DashboardPage() {
                 <CardTitle className="text-sm font-medium">
                   Completion Rate
                 </CardTitle>
-                <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                <BarChart3 className="h-4 w-4 text-primary" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">73.4%</div>
@@ -151,7 +151,7 @@ export default function DashboardPage() {
                 {recentActivity.map((activity, index) => (
                   <div className="flex items-start gap-4" key={index}>
                       <div className="flex items-center justify-center h-8 w-8 rounded-full bg-muted">
-                        <Activity className="h-4 w-4 text-muted-foreground" />
+                        <Activity className="h-4 w-4 text-primary" />
                       </div>
                       <div className="grid gap-1">
                           <p className="text-sm font-medium leading-none">
@@ -171,16 +171,16 @@ export default function DashboardPage() {
                   </CardHeader>
                   <CardContent className="grid md:grid-cols-2 gap-4">
                       <Button variant="outline" asChild>
-                          <Link href="/tasks"><PlusCircle className="mr-2 h-4 w-4"/> Add Task</Link>
+                          <Link href="/tasks"><PlusCircle className="mr-2 h-4 w-4 text-primary"/> Add Task</Link>
                       </Button>
                       <Button variant="outline" asChild>
-                          <Link href="/teams"><Users className="mr-2 h-4 w-4"/> Manage Teams</Link>
+                          <Link href="/teams"><Users className="mr-2 h-4 w-4 text-primary"/> Manage Teams</Link>
                       </Button>
                       <Button variant="outline" asChild>
-                          <Link href="/announcements"><Megaphone className="mr-2 h-4 w-4"/> Post Announcement</Link>
+                          <Link href="/announcements"><Megaphone className="mr-2 h-4 w-4 text-primary"/> Post Announcement</Link>
                       </Button>
                       <Button variant="outline" asChild>
-                          <Link href="/docs"><BookOpen className="mr-2 h-4 w-4"/> View Docs</Link>
+                          <Link href="/docs"><BookOpen className="mr-2 h-4 w-4 text-primary"/> View Docs</Link>
                       </Button>
                   </CardContent>
               </Card>
