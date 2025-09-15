@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -30,8 +31,9 @@ import {
   PieChart,
   Pie,
   Cell,
+  Label,
 } from 'recharts';
-import { ArrowUpRight, PlusCircle, BookOpen, ListTodo, Users, Bell, BarChart3, Megaphone } from "lucide-react";
+import { ArrowUpRight, PlusCircle, BookOpen, ListTodo, Users, Bell, BarChart3, Megaphone, Activity, UsersRound } from "lucide-react";
 
 const taskProgressData = [
   { name: 'Mon', tasks: 12 },
@@ -44,10 +46,10 @@ const taskProgressData = [
 ];
 
 const taskStatusData = [
-    { name: 'Completed', value: 400, color: '#10B981' },
-    { name: 'In Progress', value: 300, color: '#F59E0B' },
-    { name: 'Overdue', value: 50, color: '#EF4444' },
-    { name: 'Open', value: 200, color: '#3B82F6' },
+    { name: 'Completed', value: 400, color: 'hsl(var(--chart-2))' },
+    { name: 'In Progress', value: 300, color: 'hsl(var(--chart-4))' },
+    { name: 'Overdue', value: 50, color: 'hsl(var(--destructive))' },
+    { name: 'Open', value: 200, color: 'hsl(var(--chart-1))' },
 ];
 
 const recentActivity = [
@@ -66,7 +68,7 @@ export default function DashboardPage() {
           <div className="flex items-center">
             <h1 className="text-lg font-semibold md:text-2xl font-headline">Dashboard</h1>
           </div>
-          <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
@@ -86,7 +88,7 @@ export default function DashboardPage() {
                 <CardTitle className="text-sm font-medium">
                   Active Teams
                 </CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
+                <UsersRound className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">12</div>
@@ -102,7 +104,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">50</div>
-                <p className="text-xs text-muted-foreground text-red-500">
+                <p className="text-xs text-destructive">
                   -5.2% from last week
                 </p>
               </CardContent>
@@ -132,7 +134,7 @@ export default function DashboardPage() {
                   <BarChart data={taskProgressData}>
                     <XAxis dataKey="name" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
                     <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
-                    <Tooltip cursor={{fill: 'hsl(var(--accent))'}} contentStyle={{backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))'}}/>
+                    <Tooltip cursor={{fill: 'hsl(var(--accent))'}} contentStyle={{backgroundColor: 'hsl(var(--background) / 0.8)', border: '1px solid hsl(var(--border))', backdropFilter: 'blur(4px)'}}/>
                     <Bar dataKey="tasks" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -148,6 +150,9 @@ export default function DashboardPage() {
               <CardContent className="grid gap-4">
                 {recentActivity.map((activity, index) => (
                   <div className="flex items-start gap-4" key={index}>
+                      <div className="flex items-center justify-center h-8 w-8 rounded-full bg-muted">
+                        <Activity className="h-4 w-4 text-muted-foreground" />
+                      </div>
                       <div className="grid gap-1">
                           <p className="text-sm font-medium leading-none">
                           <span className="font-semibold text-primary">{activity.user}</span> {activity.action}
@@ -192,16 +197,19 @@ export default function DashboardPage() {
                               cy="50%"
                               labelLine={false}
                               outerRadius={80}
+                              innerRadius={50}
                               fill="#8884d8"
                               dataKey="value"
                               nameKey="name"
-                              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                              paddingAngle={5}
                           >
                               {taskStatusData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={entry.color} />
+                              <Cell key={`cell-${index}`} fill={entry.color} className="stroke-background" />
                               ))}
+                              <Label value={`${(taskStatusData.find(d => d.name === 'Completed')!.value / taskStatusData.reduce((acc, curr) => acc + curr.value, 0) * 100).toFixed(0)}%`} position="center" fill="hsl(var(--foreground))" className="text-2xl font-bold" />
+                              <Label value="Completed" position="center" dy={20} fill="hsl(var(--muted-foreground))" className="text-sm" />
                           </Pie>
-                          <Tooltip contentStyle={{backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))'}}/>
+                          <Tooltip contentStyle={{backgroundColor: 'hsl(var(--background) / 0.8)', border: '1px solid hsl(var(--border))', backdropFilter: 'blur(4px)'}}/>
                           </PieChart>
                       </ResponsiveContainer>
                   </CardContent>
