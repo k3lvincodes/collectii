@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
+import { ThemeToggle } from './theme-toggle';
 
 const navItems = [
   { name: 'Home', href: '/' },
@@ -78,6 +79,7 @@ export function SiteHeader() {
           <Button asChild>
             <Link href="/get-started">Get Started</Link>
           </Button>
+          <ThemeToggle />
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="ghost" size="icon">
