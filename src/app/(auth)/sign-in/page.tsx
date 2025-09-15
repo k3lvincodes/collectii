@@ -15,7 +15,7 @@ export default function SignInPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
        <div className="absolute top-8 left-8">
-        <Link href="/" className="font-bold font-headline text-lg">Collectii.</Link>
+        <Link href="/" className="font-bold font-headline text-lg">Collectii<span className="text-primary">.</span></Link>
       </div>
       <Card className="mx-auto max-w-sm w-full">
         <CardHeader>

@@ -58,7 +58,7 @@ export function AppHeader() {
                 className="flex items-center gap-2 text-lg font-semibold mb-4"
               >
                 <Package2 className="h-6 w-6 text-primary" />
-                <span className="font-headline text-lg">Collectii.</span>
+                <span className="font-headline text-lg">Collectii<span className="text-primary">.</span></span>
               </Link>
               {navItems.map(({href, icon: Icon, label}) => (
                   <Link

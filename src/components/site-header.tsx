@@ -38,7 +38,7 @@ export function SiteHeader() {
       <div className="container flex h-14 items-center">
         <div className="flex items-center">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="font-bold font-headline text-lg">Collectii.</span>
+            <span className="font-bold font-headline text-lg">Collectii<span className="text-primary">.</span></span>
           </Link>
         </div>
         
@@ -87,7 +87,7 @@ export function SiteHeader() {
             </SheetTrigger>
             <SheetContent side="left" className="pr-0">
               <Link href="/" className="mr-6 flex items-center space-x-2">
-                 <span className="font-bold font-headline text-lg">Collectii.</span>
+                 <span className="font-bold font-headline text-lg">Collectii<span className="text-primary">.</span></span>
               </Link>
               <div className="flex flex-col space-y-3 pt-6">
                 {[...navItems, ...resources].map((item) => (
