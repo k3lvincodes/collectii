@@ -17,7 +17,7 @@ export function SiteFooter() {
           <div>
             <h3 className="font-bold font-headline text-lg">Collectii.</h3>
             <p className="text-muted-foreground mt-2">A Modern Productivity & Workforce Platform.</p>
-            <p className="text-xs text-muted-foreground mt-4">Subtle “Made with Collectii” tagline.</p>
+            <p className="text-xs text-muted-foreground mt-4">Made by Playsole</p>
           </div>
           <div className="flex justify-between md:justify-end">
             <div className="flex flex-col gap-2">
