@@ -61,8 +61,8 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <SiteHeader />
-      <main className="flex-1">
-      <DecorativeShapes />
+      <main className="flex-1 relative">
+        <DecorativeShapes />
         <section className="relative min-h-screen flex items-center justify-center text-center px-4 overflow-hidden">
           <div className="container relative z-20">
             <h1 className="font-headline text-4xl md:text-6xl font-bold tracking-tighter mb-4">
