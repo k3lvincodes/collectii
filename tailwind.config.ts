@@ -17,8 +17,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['PT Sans', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        body: ['Josefin Sans', 'sans-serif'],
+        headline: ['Josefin Sans', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
