@@ -13,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from './theme-toggle';
 
@@ -73,12 +73,14 @@ export function SiteHeader() {
         </div>
 
         <div className="flex items-center justify-end gap-2">
-          <Button variant="ghost" asChild>
-            <Link href="/sign-in">Sign In</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/get-started">Get Started</Link>
-          </Button>
+          <div className="hidden md:flex items-center gap-2">
+            <Button variant="ghost" asChild>
+              <Link href="/sign-in">Sign In</Link>
+            </Button>
+            <Button asChild>
+              <Link href="/get-started">Get Started</Link>
+            </Button>
+          </div>
           <ThemeToggle />
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild className="md:hidden">
@@ -88,6 +90,7 @@ export function SiteHeader() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="pr-0">
+               <SheetTitle><span className="sr-only">Mobile Menu</span></SheetTitle>
               <Link href="/" className="mr-6 flex items-center space-x-2">
                  <span className="font-bold font-headline text-lg">Collectii<span className="text-primary">.</span></span>
               </Link>
