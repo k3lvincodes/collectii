@@ -86,7 +86,7 @@ export default function Home() {
           <div className="container relative z-20">
             <div className="grid md:grid-cols-3 gap-8">
               {features.map((feature, index) => (
-                <Card key={index} className="bg-transparent border-0 shadow-none text-center">
+                <Card key={index} className="bg-card/80 backdrop-blur-sm border-white/10">
                   <CardHeader className="items-center">
                     {feature.icon}
                     <CardTitle className="font-headline mt-4 text-xl">{feature.title}</CardTitle>
