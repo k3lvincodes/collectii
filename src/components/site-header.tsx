@@ -91,22 +91,32 @@ export function SiteHeader() {
               <Link href="/" className="mr-6 flex items-center space-x-2">
                  <span className="font-bold font-headline text-lg">Collectii<span className="text-primary">.</span></span>
               </Link>
-              <div className="flex flex-col space-y-3 pt-6">
-                {[...navItems, ...resources].map((item) => (
-                  !item.disabled && (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={cn(
-                        'text-lg transition-colors hover:text-foreground/80',
-                        pathname === item.href ? 'text-foreground' : 'text-foreground/60'
-                      )}
-                    >
-                      {item.name}
-                    </Link>
-                  )
-                ))}
+              <div className="flex flex-col h-full">
+                <div className="flex flex-col space-y-3 pt-6">
+                  {[...navItems, ...resources].map((item) => (
+                    !item.disabled && (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={cn(
+                          'text-lg transition-colors hover:text-foreground/80',
+                          pathname === item.href ? 'text-foreground' : 'text-foreground/60'
+                        )}
+                      >
+                        {item.name}
+                      </Link>
+                    )
+                  ))}
+                </div>
+                <div className="mt-auto flex flex-col gap-2">
+                  <Button variant="outline" asChild>
+                    <Link href="/sign-in" onClick={() => setIsMobileMenuOpen(false)}>Sign In</Link>
+                  </Button>
+                  <Button asChild>
+                    <Link href="/get-started" onClick={() => setIsMobileMenuOpen(false)}>Get Started</Link>
+                  </Button>
+                </div>
               </div>
             </SheetContent>
           </Sheet>
