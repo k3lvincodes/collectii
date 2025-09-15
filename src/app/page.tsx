@@ -168,17 +168,17 @@ export default function Home() {
             <p className="text-muted-foreground mb-8">Connect your favorite apps to make Collectii your central hub for productivity.</p>
             <div className="flex justify-center items-center gap-12">
                <svg
-                className="h-10 w-25 text-[#4285F4] opacity-60 hover:opacity-100 transition-opacity"
+                className="h-10 w-25 opacity-60 hover:opacity-100 transition-opacity"
                 viewBox="0 0 92 30"
-                fill="currentColor"
+                fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true"
                 data-ai-hint="google logo"
               >
-                <path d="M30.14 15.62C30.14 14.54 30.05 13.51 29.87 12.52H15.31V18.15H23.8C23.51 20.08 22.47 21.75 20.92 22.84V26.47H25.39C28.27 23.83 30.14 20.04 30.14 15.62Z" />
-                <path d="M15.31 29.98C19.5 29.98 23.01 28.58 25.39 26.47L20.92 22.84C19.5 23.73 17.65 24.28 15.31 24.28C11.16 24.28 7.64 21.57 6.46 17.8H1.83V21.54C4.15 26.54 9.29 29.98 15.31 29.98Z" />
-                <path d="M6.46 17.8C6.22 17.06 6.09 16.29 6.09 15.5C6.09 14.71 6.22 13.94 6.46 13.2L1.83 9.46C0.67 11.56 0 13.45 0 15.5C0 17.55 0.67 19.44 1.83 21.54L6.46 17.8Z" />
-                <path d="M15.31 6.72C17.65 6.72 19.64 7.55 21.14 8.97L25.49 4.62C23.01 2.33 19.5 0.93 15.31 0.93C9.29 0.93 4.15 4.37 1.83 9.46L6.46 13.2C7.64 9.43 11.16 6.72 15.31 6.72Z" />
+                <path d="M30.14 15.62C30.14 14.54 30.05 13.51 29.87 12.52H15.31V18.15H23.8C23.51 20.08 22.47 21.75 20.92 22.84V26.47H25.39C28.27 23.83 30.14 20.04 30.14 15.62Z" fill="#4285F4"/>
+                <path d="M15.31 29.98C19.5 29.98 23.01 28.58 25.39 26.47L20.92 22.84C19.5 23.73 17.65 24.28 15.31 24.28C11.16 24.28 7.64 21.57 6.46 17.8H1.83V21.54C4.15 26.54 9.29 29.98 15.31 29.98Z" fill="#34A853"/>
+                <path d="M6.46 17.8C6.22 17.06 6.09 16.29 6.09 15.5C6.09 14.71 6.22 13.94 6.46 13.2L1.83 9.46C0.67 11.56 0 13.45 0 15.5C0 17.55 0.67 19.44 1.83 21.54L6.46 17.8Z" fill="#FBBC05"/>
+                <path d="M15.31 6.72C17.65 6.72 19.64 7.55 21.14 8.97L25.49 4.62C23.01 2.33 19.5 0.93 15.31 0.93C9.29 0.93 4.15 4.37 1.83 9.46L6.46 13.2C7.64 9.43 11.16 6.72 15.31 6.72Z" fill="#EA4335"/>
               </svg>
               <svg
                 className="h-10 w-22 text-black dark:text-white opacity-60 hover:opacity-100 transition-opacity"
