@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from "next/link";
@@ -26,6 +27,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ThemeToggle } from "./theme-toggle";
 
 const navItems = [
   { href: '/dashboard', icon: Home, label: 'Dashboard' },
@@ -38,7 +40,7 @@ const navItems = [
 
 export function AppHeader() {
   return (
-    <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6 sticky top-0 z-30">
+    <header className="flex h-14 items-center gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 lg:h-[60px] lg:px-6 sticky top-0 z-30">
       <div className="container flex items-center gap-4 px-0">
         <Sheet>
           <SheetTrigger asChild>
@@ -85,6 +87,7 @@ export function AppHeader() {
             </div>
           </form>
         </div>
+        <ThemeToggle />
         <Button variant="outline" size="icon" className="h-8 w-8">
               <Bell className="h-4 w-4" />
               <span className="sr-only">Toggle notifications</span>
