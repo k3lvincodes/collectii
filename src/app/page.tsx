@@ -167,8 +167,30 @@ export default function Home() {
             <h2 className="font-headline text-3xl md:text-4xl font-bold mb-4">Works seamlessly with the tools you already use.</h2>
             <p className="text-muted-foreground mb-8">Connect your favorite apps to make Collectii your central hub for productivity.</p>
             <div className="flex justify-center items-center gap-12">
-              <Image src="/google-logo.svg" alt="Google" width={100} height={40} data-ai-hint="google logo" className="opacity-60 hover:opacity-100 transition-opacity" />
-              <Image src="/notion-logo.svg" alt="Notion" width={90} height={40} data-ai-hint="notion logo" className="opacity-60 hover:opacity-100 transition-opacity" />
+               <svg
+                className="h-10 w-25 text-[#4285F4] opacity-60 hover:opacity-100 transition-opacity"
+                viewBox="0 0 92 30"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                data-ai-hint="google logo"
+              >
+                <path d="M30.14 15.62C30.14 14.54 30.05 13.51 29.87 12.52H15.31V18.15H23.8C23.51 20.08 22.47 21.75 20.92 22.84V26.47H25.39C28.27 23.83 30.14 20.04 30.14 15.62Z" />
+                <path d="M15.31 29.98C19.5 29.98 23.01 28.58 25.39 26.47L20.92 22.84C19.5 23.73 17.65 24.28 15.31 24.28C11.16 24.28 7.64 21.57 6.46 17.8H1.83V21.54C4.15 26.54 9.29 29.98 15.31 29.98Z" />
+                <path d="M6.46 17.8C6.22 17.06 6.09 16.29 6.09 15.5C6.09 14.71 6.22 13.94 6.46 13.2L1.83 9.46C0.67 11.56 0 13.45 0 15.5C0 17.55 0.67 19.44 1.83 21.54L6.46 17.8Z" />
+                <path d="M15.31 6.72C17.65 6.72 19.64 7.55 21.14 8.97L25.49 4.62C23.01 2.33 19.5 0.93 15.31 0.93C9.29 0.93 4.15 4.37 1.83 9.46L6.46 13.2C7.64 9.43 11.16 6.72 15.31 6.72Z" />
+              </svg>
+              <svg
+                className="h-10 w-22 text-black dark:text-white opacity-60 hover:opacity-100 transition-opacity"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                data-ai-hint="notion logo"
+              >
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-12h2v8h-2v-8zm0 10h2v2h-2v-2z" />
+                <path d="M18.4,5.6H5.6v12.8h12.8V5.6z M9.6,16H8V8h1.6V16z M12.8,16h-1.6V8h1.6V16z M16,16h-1.6V8H16V16z M19.2,16H18.4l-3.2-4.8V16h-1.6V8h1.6l3.2,4.8V8h1.6V16z" />
+              </svg>
             </div>
           </div>
         </section>
