@@ -1,4 +1,5 @@
 import { AppHeader } from "@/components/app-header";
+import { AddTaskDialog } from "@/components/add-task-dialog";
 import { TaskPrioritizer } from "@/components/task-prioritizer";
 
 export default function TasksPage() {
@@ -9,6 +10,7 @@ export default function TasksPage() {
         <div className="container px-0">
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold md:text-2xl font-headline">Tasks</h1>
+            <AddTaskDialog />
           </div>
           <div className="mt-6">
             <TaskPrioritizer />
