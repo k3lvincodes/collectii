@@ -4,7 +4,7 @@ import { adminNavSections } from '@/config/dashboard-nav';
 
 export default function BillingAndSubscriptionsPage() {
   const section = adminNavSections.find(s => s.title === 'Billing & Subscriptions');
-  
+
   return (
     <div className="p-6 space-y-6">
       <div>
@@ -18,7 +18,7 @@ export default function BillingAndSubscriptionsPage() {
         {section?.items.map((item) => {
           const Icon = item.icon;
           return (
-            <Link key={item.href} href={item.href}>
+            <Link key={item.href} to={item.href}>
               <Card className="hover:bg-muted/50 transition-colors cursor-pointer h-full">
                 <CardHeader>
                   <div className="flex items-center gap-3">

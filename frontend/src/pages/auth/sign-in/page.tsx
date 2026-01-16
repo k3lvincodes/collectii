@@ -1,5 +1,5 @@
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,32 +10,39 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { login } from "@/app/actions/auth";
+import { createClient } from "@/lib/supabase/client";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from 'react-router-dom';
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
     const formData = new FormData(event.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
 
-    const result = await login(formData); // This will redirect if successful, or return error
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
 
-    if (result?.error) {
+    if (error) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: result.error,
+        description: error.message,
       });
       setIsLoading(false);
+    } else {
+      // Redirect to app
+      navigate('/app');
     }
-    // If successful, redirect happens on server side
   };
 
   return (

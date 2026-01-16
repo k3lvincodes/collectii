@@ -17,37 +17,52 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { signup } from "@/app/actions/auth";
+import { createClient } from "@/lib/supabase/client";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function GetStartedPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
     const formData = new FormData(event.currentTarget);
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const fullName = formData.get('fullName') as string;
+    const accountType = formData.get('accountType') as string;
 
-    const result = await signup(formData);
+    const supabase = createClient();
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+          account_type: accountType
+        }
+      }
+    });
 
-    if (result?.error) {
+    if (error) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: result.error,
+        description: error.message,
       });
       setIsLoading(false);
-    } else if (result?.success) {
+    } else {
       toast({
         title: "Account Created",
-        description: result.message,
+        description: "Please check your email to confirm your account.",
       });
-      // Optionally redirect to login or check email page
+      // Redirect to sign in or just stay there showing info
       setIsLoading(false);
+      // Optional: navigate('/sign-in');
     }
   };
 

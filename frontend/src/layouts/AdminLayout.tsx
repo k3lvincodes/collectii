@@ -42,7 +42,15 @@ export default function AdminLayout() {
         <SidebarProvider>
             <AdminSidebar user={user} />
             <div className="flex flex-col flex-1 overflow-hidden md:pl-20">
-                <AppHeader />
+                <AppHeader
+                    accountType="super_admin"
+                    user={user}
+                    currentContext={{ type: 'personal' }}
+                    currentSlug="admin"
+                    organizations={[]}
+                    onContextChange={() => { }}
+                    onCreateOrg={() => { }}
+                />
                 <main className="flex-1 overflow-auto bg-background">
                     <Outlet />
                 </main>

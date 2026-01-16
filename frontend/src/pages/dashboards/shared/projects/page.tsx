@@ -185,7 +185,7 @@ export default function ProjectsPage() {
 
     const handleProjectCreated = async () => {
         if (user) {
-            await fetchProjects(user);
+            await fetchProjects(user, contextType, contextId);
         }
     };
 
