@@ -27,11 +27,10 @@ export default function AboutPage() {
               </section>
 
               <div className="relative w-full h-80 rounded-lg overflow-hidden bg-card border">
-                <img 
-                  src="https://picsum.photos/1200/800?grayscale" 
+                <img
+                  src="https://picsum.photos/1200/800?grayscale"
                   alt="Team working together"
-                  fill
-                  className="object-cover"
+                  className="object-cover w-full h-full"
                   data-ai-hint="team collaboration"
                 />
               </div>

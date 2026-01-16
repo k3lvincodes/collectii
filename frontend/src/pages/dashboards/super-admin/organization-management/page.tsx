@@ -18,7 +18,7 @@ export default function OrganizationManagementPage() {
                 {section?.items.map((item) => {
                     const Icon = item.icon;
                     return (
-                        <Link key={item.href} href={item.href}>
+                        <Link key={item.href} to={item.href}>
                             <Card className="hover:bg-muted/50 transition-colors cursor-pointer h-full">
                                 <CardHeader>
                                     <div className="flex items-center gap-3">

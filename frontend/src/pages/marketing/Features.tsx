@@ -51,13 +51,12 @@ export default function FeaturesPage() {
                   <p className="text-muted-foreground text-lg">{feature.description}</p>
                 </div>
                 <div className={cn('relative w-full h-64 md:h-80 rounded-lg overflow-hidden bg-card border', index % 2 === 1 ? 'md:order-1' : '')}>
-                   <img 
-                     src={`https://picsum.photos/seed/${index}/800/600`} 
-                     alt={feature.title}
-                     fill
-                     className="object-cover"
-                     data-ai-hint="interface screenshot"
-                   />
+                  <img
+                    src={`https://picsum.photos/seed/${index}/800/600`}
+                    alt={feature.title}
+                    className="object-cover w-full h-full"
+                    data-ai-hint="interface screenshot"
+                  />
                 </div>
               </div>
             ))}
