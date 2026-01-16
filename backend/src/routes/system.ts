@@ -1,6 +1,6 @@
 
 import { Router } from 'express';
-import { getSystemHealth, getDashboardMetrics } from '../controllers/systemController';
+import { getSystemHealth, getDashboardMetrics } from '../controllers/systemController.js';
 
 const router = Router();
 

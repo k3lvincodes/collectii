@@ -1,6 +1,6 @@
 
 import { Request, Response } from 'express';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/supabase.js';
 
 export const getSystemHealth = async (req: Request, res: Response) => {
     let dbStatus = 'Operational';

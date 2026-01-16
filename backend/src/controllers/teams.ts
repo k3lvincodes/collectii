@@ -1,7 +1,7 @@
 
 import { Response } from 'express'
-import { AuthRequest } from '../middleware/auth'
-import { supabase } from '../lib/supabase'
+import { AuthRequest } from '../middleware/auth.js'
+import { supabase } from '../lib/supabase.js'
 
 export const getTeams = async (req: AuthRequest, res: Response) => {
     // Logic from actions/teams.ts

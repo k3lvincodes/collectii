@@ -1,7 +1,7 @@
 
 import { Router } from 'express'
-import { createAnnouncement, getAnnouncements } from '../controllers/announcements'
-import { requireAuth } from '../middleware/auth'
+import { createAnnouncement, getAnnouncements } from '../controllers/announcements.js'
+import { requireAuth } from '../middleware/auth.js'
 
 const router = Router()
 

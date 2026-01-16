@@ -14,22 +14,22 @@ app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 
-import tasksRouter from './routes/tasks'
+import tasksRouter from './routes/tasks.js'
 app.use('/api/tasks', tasksRouter)
 
-import teamsRouter from './routes/teams'
+import teamsRouter from './routes/teams.js'
 app.use('/api/teams', teamsRouter)
 
-import announcementsRouter from './routes/announcements'
+import announcementsRouter from './routes/announcements.js'
 app.use('/api/announcements', announcementsRouter)
 
-import systemRouter from './routes/system'
+import systemRouter from './routes/system.js'
 app.use('/api/system', systemRouter)
 
-import adminRouter from './routes/admin'
+import adminRouter from './routes/admin.js'
 app.use('/api/admin', adminRouter)
 
-import authRouter from './routes/auth'
+import authRouter from './routes/auth.js'
 app.use('/api/auth', authRouter)
 
 

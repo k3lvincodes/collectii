@@ -19,7 +19,7 @@ import {
     getOrganizationMembers,
     inviteOrgMember,
     removeOrgMember
-} from '../controllers/adminController';
+} from '../controllers/adminController.js';
 
 const router = Router();
 

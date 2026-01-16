@@ -1,7 +1,7 @@
 
 import { Router } from 'express'
-import { createTeam, getTeamMembers, getTeams } from '../controllers/teams'
-import { requireAuth } from '../middleware/auth'
+import { createTeam, getTeamMembers, getTeams } from '../controllers/teams.js'
+import { requireAuth } from '../middleware/auth.js'
 
 const router = Router()
 

@@ -1,7 +1,7 @@
 
 import { Response } from 'express'
-import { AuthRequest } from '../middleware/auth'
-import { supabase } from '../lib/supabase'
+import { AuthRequest } from '../middleware/auth.js'
+import { supabase } from '../lib/supabase.js'
 
 export const getKey = async (req: AuthRequest, res: Response) => {
     // This is just a placeholder example based on nothing, checking previous conversation summaries
