@@ -44,13 +44,19 @@ export function PerformanceScorecard({
                     {/* Big Score Section */}
                     <div>
                         <div className="flex items-center gap-3 mb-2">
-                            <span className={cn(
-                                "px-3 py-1 rounded-full text-sm font-bold shadow-sm",
-                                isUp ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-                            )}>
-                                {isUp ? '▲' : '▼'} {trend}%
-                            </span>
-                            <span className="text-gray-500 font-medium">vs last month</span>
+                            {score > 0 ? (
+                                <>
+                                    <span className={cn(
+                                        "px-3 py-1 rounded-full text-sm font-bold shadow-sm",
+                                        isUp ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                                    )}>
+                                        {isUp ? '▲' : '▼'} {trend}%
+                                    </span>
+                                    <span className="text-gray-500 font-medium">vs last month</span>
+                                </>
+                            ) : (
+                                <span className="text-gray-500 font-medium pl-1">+0 pts this week</span>
+                            )}
                         </div>
                         <div className="flex items-baseline gap-1">
                             <span className="text-[5rem] leading-none font-bold text-gray-900 tracking-tighter">{score}</span>

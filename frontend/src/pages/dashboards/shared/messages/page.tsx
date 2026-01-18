@@ -15,7 +15,8 @@ import {
     ListTodo,
     MessageSquarePlus,
     X,
-    Loader2
+    Loader2,
+    ArrowLeft
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -808,6 +809,10 @@ export default function MessagesPage() {
         setSearchQuery('');
     };
 
+    const handleBackToConversations = () => {
+        setSelectedThreadId(null);
+    };
+
     const formatTime = (date: Date) => {
         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     };
@@ -826,10 +831,13 @@ export default function MessagesPage() {
     );
 
     return (
-        <div className="flex h-[calc(100vh-3.5rem)] lg:h-[calc(100vh-60px)] bg-background overflow-hidden">
+        <div className="flex h-[100dvh] lg:h-[calc(100vh-60px)] bg-background overflow-hidden relative">
 
             {/* --- LEFT SIDEBAR: Contacts --- */}
-            <div className="w-80 border-r flex flex-col bg-card/50">
+            <div className={cn(
+                "w-full md:w-80 border-r flex-col bg-card/50",
+                selectedThreadId ? "hidden md:flex" : "flex"
+            )}>
                 <div className="p-4 space-y-4">
                     <div className="flex items-center justify-between">
                         <h2 className="text-xl font-bold">Messages</h2>
@@ -908,11 +916,22 @@ export default function MessagesPage() {
             {activeParticipant ? (
                 <>
                     {/* Chat Area */}
-                    <div className="flex-1 flex flex-col bg-background relative z-10 w-full">
+                    <div className={cn(
+                        "flex-1 flex-col bg-background relative z-10 w-full",
+                        !selectedThreadId ? "hidden md:flex" : "flex"
+                    )}>
                         {/* Header */}
-                        <div className="h-16 border-b flex items-center justify-between px-6 bg-card/30 backdrop-blur-sm">
+                        <div className="h-16 border-b flex items-center justify-between px-4 md:px-6 bg-card/30 backdrop-blur-sm">
                             <div className="flex items-center gap-3">
-                                <Avatar className="h-10 w-10">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="md:hidden -ml-2"
+                                    onClick={handleBackToConversations}
+                                >
+                                    <ArrowLeft className="h-5 w-5" />
+                                </Button>
+                                <Avatar className="h-8 w-8 md:h-10 md:w-10">
                                     <AvatarImage src={activeParticipant.avatar} />
                                     <AvatarFallback>{activeParticipant.name?.[0]}</AvatarFallback>
                                 </Avatar>
@@ -1126,7 +1145,7 @@ export default function MessagesPage() {
                     </div>
                 </>
             ) : (
-                <div className="flex-1 flex flex-col items-center justify-center bg-background">
+                <div className="hidden md:flex flex-1 flex-col items-center justify-center bg-background">
                     <MessageSquarePlus className="h-16 w-16 text-muted-foreground/30 mb-4" />
                     <h3 className="text-lg font-medium text-muted-foreground mb-2">No conversation selected</h3>
                     <p className="text-sm text-muted-foreground/70 mb-4">Select a conversation or start a new one</p>

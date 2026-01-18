@@ -15,8 +15,9 @@ export default {
         },
         extend: {
             fontFamily: {
-                body: ['"Montserrat Alternates"', 'sans-serif'],
-                headline: ['"Montserrat Alternates"', 'sans-serif'],
+                body: ['"Lexend"', 'sans-serif'],
+                headline: ['"Lexend"', 'sans-serif'],
+                secondary: ['"Inter"', 'sans-serif'],
                 code: ['monospace'],
             },
             colors: {

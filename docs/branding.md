@@ -11,11 +11,18 @@
 ## Typography
 
 ### Primary Font Family
-**Montserrat Alternates** (Google Fonts)
+**Lexend** (Google Fonts)
 
-- **Body Text**: `font-family: 'Montserrat Alternates', sans-serif`
-- **Headlines**: `font-family: 'Montserrat Alternates', sans-serif`
+- **Headlines**: `font-family: 'Lexend', sans-serif`
+- **Body Text**: `font-family: 'Lexend', sans-serif`
+
+### Secondary Font Family
+**Inter** (Google Fonts)
+
+- **UI Elements**: `font-family: 'Inter', sans-serif`
 - **Code/Monospace**: `font-family: monospace`
+
+### Font Weights Available
 
 ### Font Weights Available
 - 100 (Thin)
