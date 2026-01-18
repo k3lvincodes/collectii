@@ -1,1 +1,16 @@
-/* /index.html 200
+# Explicit routes to avoid root loop
+/app/* /index.html 200
+/admin/* /index.html 200
+/login /index.html 200
+/sign-in /index.html 200
+/sign-up /index.html 200
+/get-started /index.html 200
+/features /index.html 200
+/pricing /index.html 200
+/about /index.html 200
+
+# Catch-all for sub-paths of main routes if somehow missed, but avoid root wildcard
+# Note: Cloudflare might still complain if we use strict /*, so we rely on explicit top-level paths.
+# If a user visits a completely random path like /foo, it might 404, but that is acceptable behavior or we can try a safer fallback.
+# Safer fallback that might work:
+# /404 /index.html 200
