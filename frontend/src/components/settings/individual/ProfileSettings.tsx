@@ -187,7 +187,7 @@ export default function ProfileSettings() {
     };
 
     return (
-        <Card className="max-w-4xl">
+        <Card className="max-w-4xl mx-auto">
             <CardHeader>
                 <CardTitle>Profile Settings</CardTitle>
                 <CardDescription>

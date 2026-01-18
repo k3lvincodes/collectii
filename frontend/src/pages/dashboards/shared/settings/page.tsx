@@ -1,13 +1,14 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Link, useOutletContext, Routes, Route, useParams } from 'react-router-dom';
+import { Card, CardContent } from '@/components/ui/card';
+import { useOutletContext, Routes, Route, useParams, useLocation, Navigate } from 'react-router-dom';
 import { individualSettingsNavigation, organizationSettingsNavigation } from '@/config/dashboard-nav';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
 
 // Individual Settings Components
 import ProfileSettings from '@/components/settings/individual/ProfileSettings';
 import SecuritySettings from '@/components/settings/individual/SecuritySettings';
 import PreferencesSettings from '@/components/settings/individual/PreferencesSettings';
+
+// Settings Sidebar
+import SettingsSidebar from '@/components/settings/SettingsSidebar';
 
 interface WorkspaceContext {
   type: 'personal' | 'organization';
@@ -15,58 +16,14 @@ interface WorkspaceContext {
   orgName?: string;
 }
 
-function SettingsOverview({ items }: { items: any[] }) {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold font-headline">Settings</h1>
-        <p className="text-muted-foreground mt-1">
-          Manage your account settings and preferences
-        </p>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {items.map((item) => {
-          const Icon = item.icon;
-          return (
-            <Link key={item.href} to={item.href}>
-              <Card className="hover:bg-muted/50 transition-colors cursor-pointer h-full">
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <Icon className="h-5 w-5 text-primary" />
-                    </div>
-                    <CardTitle className="text-lg">{item.label}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription>
-                    Manage {item.label.toLowerCase()}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            </Link>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function SettingsDetail({ items, contextType }: { items: any[], contextType: 'personal' | 'organization' }) {
+function SettingsContent({ items, contextType }: { items: any[], contextType: 'personal' | 'organization' }) {
   const { "*": section } = useParams();
-  const topSection = section?.split('/')[0];
+  const topSection = section?.split('/')[0] || 'profile';
   const currentItem = items.find(item => item.href === topSection);
 
   if (!currentItem) {
-    return (
-      <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
-        <h2 className="text-xl font-semibold mb-2">Setting not found</h2>
-        <Link to=".">
-          <Button variant="outline">Go back</Button>
-        </Link>
-      </div>
-    );
+    // Default to first item if not found
+    return <Navigate to={items[0]?.href || 'profile'} replace />;
   }
 
   const Icon = currentItem.icon;
@@ -79,74 +36,81 @@ function SettingsDetail({ items, contextType }: { items: any[], contextType: 'pe
         case 'security': return <SecuritySettings />;
         case 'preferences': return <PreferencesSettings />;
         default: return (
-          <div className="text-center py-12 text-muted-foreground">
-            <Icon className="h-12 w-12 mx-auto mb-4 opacity-20" />
-            <h3 className="text-lg font-medium mb-2">Configure {currentItem.label}</h3>
-            <p>Settings for {currentItem.label.toLowerCase()} will appear here.</p>
-            <div className="mt-4 p-4 bg-muted/50 rounded-lg text-xs font-mono text-left max-w-md mx-auto">
-              TODO: Implement form for {currentItem.href}
-            </div>
-          </div>
+          <Card>
+            <CardContent className="p-6">
+              <div className="text-center py-12 text-muted-foreground">
+                <Icon className="h-12 w-12 mx-auto mb-4 opacity-20" />
+                <h3 className="text-lg font-medium mb-2">Configure {currentItem.label}</h3>
+                <p>Settings for {currentItem.label.toLowerCase()} will appear here.</p>
+                <div className="mt-4 p-4 bg-muted/50 rounded-lg text-xs font-mono text-left max-w-md mx-auto">
+                  TODO: Implement form for {currentItem.href}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         );
       }
     } else {
       // Organization settings placeholders
       return (
-        <div className="text-center py-12 text-muted-foreground">
-          <Icon className="h-12 w-12 mx-auto mb-4 opacity-20" />
-          <h3 className="text-lg font-medium mb-2">Configure {currentItem.label}</h3>
-          <p>Settings for {currentItem.label.toLowerCase()} will appear here.</p>
-          <div className="mt-4 p-4 bg-muted/50 rounded-lg text-xs font-mono text-left max-w-md mx-auto">
-            TODO: Implement Organization form for {currentItem.href}
-          </div>
-        </div>
+        <Card>
+          <CardContent className="p-6">
+            <div className="text-center py-12 text-muted-foreground">
+              <Icon className="h-12 w-12 mx-auto mb-4 opacity-20" />
+              <h3 className="text-lg font-medium mb-2">Configure {currentItem.label}</h3>
+              <p>Settings for {currentItem.label.toLowerCase()} will appear here.</p>
+              <div className="mt-4 p-4 bg-muted/50 rounded-lg text-xs font-mono text-left max-w-md mx-auto">
+                TODO: Implement Organization form for {currentItem.href}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       );
     }
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Link to=".">
-          <Button variant="ghost" size="icon">
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-        </Link>
-        <div>
-          <h1 className="text-2xl font-bold font-headline flex items-center gap-2">
-            <Icon className="h-6 w-6 text-primary" />
-            {currentItem.label}
-          </h1>
-        </div>
+    <div className="flex-1 min-w-0">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold font-headline flex items-center gap-2">
+          <Icon className="h-6 w-6 text-primary" />
+          {currentItem.label}
+        </h1>
+        <p className="text-muted-foreground text-sm mt-1">
+          Manage your {currentItem.label.toLowerCase()}
+        </p>
       </div>
 
-      {/* If it's a known component, render it directly. Otherwise wrap in Card for placeholders */}
-      {['profile', 'security', 'preferences'].includes(topSection || '') && contextType === 'personal' ? (
-        renderContent()
-      ) : (
-        <Card>
-          <CardContent className="p-6">
-            {renderContent()}
-          </CardContent>
-        </Card>
-      )}
+      {renderContent()}
     </div>
   );
 }
 
 export default function SettingsPage() {
   const { currentContext } = useOutletContext<{ currentContext: WorkspaceContext }>();
+  const location = useLocation();
 
   const navigationItems = currentContext.type === 'organization'
     ? organizationSettingsNavigation
     : individualSettingsNavigation;
 
+  // Get the base path for settings (remove trailing sections)
+  const basePath = location.pathname.split('/settings')[0] + '/settings';
+
   return (
-    <div className="p-6">
-      <Routes>
-        <Route index element={<SettingsOverview items={navigationItems} />} />
-        <Route path="*" element={<SettingsDetail items={navigationItems} contextType={currentContext.type} />} />
-      </Routes>
-    </div>
+    <>
+      {/* Settings Sidebar - Fixed Position */}
+      <div className="fixed top-16 left-28 w-64 h-[calc(100vh-4rem)] bg-background z-10 p-6">
+        <SettingsSidebar items={navigationItems} basePath={basePath} />
+      </div>
+
+      {/* Settings Content - Scrollable, with left margin to account for fixed sidebar */}
+      <div className="ml-80 p-6 max-w-4xl">
+        <Routes>
+          <Route index element={<Navigate to="profile" replace />} />
+          <Route path="*" element={<SettingsContent items={navigationItems} contextType={currentContext.type} />} />
+        </Routes>
+      </div>
+    </>
   );
 }

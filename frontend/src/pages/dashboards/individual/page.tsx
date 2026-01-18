@@ -184,7 +184,7 @@ export default function IndividualDashboardPage() {
     return (
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-lg font-semibold md:text-2xl font-headline">Welcome back, {user?.email?.split('@')[0] || 'User'}</h1>
+                <h1 className="text-lg font-semibold md:text-2xl font-headline">Account Overview</h1>
                 <div className="flex items-center gap-2">
                     <Button variant="outline" size="sm">
                         <CalendarDays className="mr-2 h-4 w-4" />

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Phone, Video, Mic, MicOff, VideoOff, PhoneOff, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -22,6 +22,18 @@ interface CallOverlayProps {
     isVideoOn: boolean;
 }
 
+// Helper to format seconds to MM:SS or HH:MM:SS
+function formatDuration(seconds: number): string {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    if (hrs > 0) {
+        return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
 export function CallOverlay({
     isOpen,
     state,
@@ -39,23 +51,65 @@ export function CallOverlay({
 }: CallOverlayProps) {
     const localVideoRef = useRef<HTMLVideoElement>(null);
     const remoteVideoRef = useRef<HTMLVideoElement>(null);
+    const remoteAudioRef = useRef<HTMLAudioElement>(null);
+    const [callDuration, setCallDuration] = useState(0);
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+    // Attach local stream to video element
     useEffect(() => {
         if (localVideoRef.current && localStream) {
             localVideoRef.current.srcObject = localStream;
         }
     }, [localStream]);
 
+    // Attach remote stream to video AND audio elements
     useEffect(() => {
-        if (remoteVideoRef.current && remoteStream) {
-            remoteVideoRef.current.srcObject = remoteStream;
+        if (remoteStream) {
+            // For video calls, attach to video element
+            if (remoteVideoRef.current) {
+                remoteVideoRef.current.srcObject = remoteStream;
+            }
+            // For audio calls (or as fallback), attach to audio element
+            if (remoteAudioRef.current) {
+                remoteAudioRef.current.srcObject = remoteStream;
+                // Try to play audio
+                remoteAudioRef.current.play().catch(err => {
+                    console.warn('Audio autoplay blocked:', err);
+                });
+            }
         }
     }, [remoteStream]);
+
+    // Start/stop call duration timer
+    useEffect(() => {
+        if (state === 'connected') {
+            // Reset and start timer
+            setCallDuration(0);
+            timerRef.current = setInterval(() => {
+                setCallDuration(prev => prev + 1);
+            }, 1000);
+        } else {
+            // Clear timer when not connected
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+                timerRef.current = null;
+            }
+            setCallDuration(0);
+        }
+
+        return () => {
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+        };
+    }, [state]);
 
     if (!isOpen || state === 'idle') return null;
 
     return (
         <div className="fixed inset-0 z-50 bg-background/90 backdrop-blur-md flex items-center justify-center p-4">
+            {/* Hidden audio element for remote audio playback */}
+            <audio ref={remoteAudioRef} autoPlay playsInline className="hidden" />
 
             {/* Incoming / Calling State */}
             {(state === 'incoming' || state === 'calling') && (
@@ -67,7 +121,9 @@ export function CallOverlay({
                     <div className="text-center">
                         <h2 className="text-2xl font-bold">{partner?.name}</h2>
                         <p className="text-muted-foreground animate-pulse">
-                            {state === 'incoming' ? 'Incoming Call...' : 'Calling...'}
+                            {state === 'incoming'
+                                ? `Incoming ${type === 'video' ? 'Video' : 'Audio'} Call...`
+                                : 'Calling...'}
                         </p>
                     </div>
 
@@ -95,9 +151,16 @@ export function CallOverlay({
             {/* Connected State */}
             {state === 'connected' && (
                 <div className="relative w-full max-w-4xl h-[80vh] bg-black rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+                    {/* Call Duration Timer */}
+                    <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 bg-black/60 backdrop-blur-sm px-4 py-2 rounded-full">
+                        <span className="text-white text-sm font-mono font-medium">
+                            {formatDuration(callDuration)}
+                        </span>
+                    </div>
+
                     {/* Remote Stream (Main) */}
                     <div className="flex-1 relative bg-zinc-900 flex items-center justify-center">
-                        {/* Remote Video - Always rendered for audio playback */}
+                        {/* Remote Video - Always rendered for video calls */}
                         <video
                             ref={remoteVideoRef}
                             autoPlay
@@ -113,7 +176,9 @@ export function CallOverlay({
                                     <AvatarFallback>{partner?.name?.[0]}</AvatarFallback>
                                 </Avatar>
                                 <h3 className="text-white text-xl font-medium">{partner?.name}</h3>
-                                {type === 'audio' && <span className="text-white/60 text-sm">Audio Call</span>}
+                                <span className="text-white/60 text-sm">
+                                    {type === 'audio' ? 'Audio Call' : 'Connecting...'}
+                                </span>
                             </div>
                         )}
 
@@ -167,3 +232,4 @@ export function CallOverlay({
         </div>
     );
 }
+

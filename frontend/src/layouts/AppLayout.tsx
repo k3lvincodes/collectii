@@ -179,7 +179,7 @@ export default function AppLayout() {
           onCreateOrg={() => setShowCreateOrgModal(true)}
         />
 
-        <main className="flex-1 overflow-auto bg-background">
+        <main className="flex-1 overflow-auto bg-background pt-16">
           <Outlet context={{ currentContext, user }} />
         </main>
       </div>

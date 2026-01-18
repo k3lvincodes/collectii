@@ -6,7 +6,7 @@ export default function PlatformSettingsPage() {
     const section = adminNavSections.find(s => s.title === 'Platform Settings');
 
     return (
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-6 max-w-6xl mx-auto w-full">
             <div>
                 <h1 className="text-3xl font-bold font-headline">Platform Settings</h1>
                 <p className="text-muted-foreground mt-1">

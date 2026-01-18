@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default function AdminSettingsPage() {
     return (
-        <div className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <div className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 max-w-6xl mx-auto w-full">
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-lg font-semibold md:text-2xl font-headline">Platform Settings</h1>

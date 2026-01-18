@@ -52,7 +52,7 @@ export function AppHeader({
   }
 
   return (
-    <header className="flex h-20 items-center gap-4 bg-transparent px-4 lg:px-8 sticky top-0 z-30 pointer-events-none">
+    <header className="fixed top-0 right-0 left-0 md:left-20 flex h-16 items-center gap-4 bg-background/80 backdrop-blur-sm px-4 lg:px-8 z-30">
       {/* Container for the actual interactable header content */}
       <div className="w-full pointer-events-auto flex items-center justify-between">
 
