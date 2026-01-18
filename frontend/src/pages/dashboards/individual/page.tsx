@@ -59,87 +59,101 @@ export default function IndividualDashboardPage() {
 
     useEffect(() => {
         const fetchDashboardData = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
-            setUser(user);
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) return;
+                setUser(user);
 
-            const today = new Date().toISOString().split('T')[0];
-            const lastWeek = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+                const today = new Date().toISOString().split('T')[0];
+                const lastWeek = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-            // 1. Tasks Due Today & High Priority
-            const { data: dueTodayTasks, error: dueError } = await supabase
-                .from('tasks')
-                .select('id, priority, status, deadline')
-                .eq('assignee_id', user.id)
-                .neq('status', 'done')
-                .gte('deadline', `${today}T00:00:00`)
-                .lte('deadline', `${today}T23:59:59`);
+                // Execute all queries in parallel
+                const [
+                    { data: dueTodayTasks },
+                    { count: completedCount },
+                    { count: activeTeamsCount },
+                    { data: criticalData },
+                    { data: profileData },
+                    { data: noteData }
+                ] = await Promise.all([
+                    // 1. Tasks Due Today
+                    supabase
+                        .from('tasks')
+                        .select('id, priority, status, deadline')
+                        .eq('assignee_id', user.id)
+                        .neq('status', 'done')
+                        .gte('deadline', `${today}T00:00:00`)
+                        .lte('deadline', `${today}T23:59:59`),
 
-            // 2. Completed This Week
-            const { count: completedCount } = await supabase
-                .from('tasks')
-                .select('id', { count: 'exact', head: true })
-                .eq('assignee_id', user.id)
-                .eq('status', 'done')
-                .gte('updated_at', lastWeek);
+                    // 2. Completed This Week
+                    supabase
+                        .from('tasks')
+                        .select('id', { count: 'exact', head: true })
+                        .eq('assignee_id', user.id)
+                        .eq('status', 'done')
+                        .gte('updated_at', lastWeek),
 
-            // 3. Active Projects (Teams)
-            // User is member of teams
-            const { count: activeTeamsCount } = await supabase
-                .from('team_members')
-                .select('id', { count: 'exact', head: true })
-                .eq('user_id', user.id);
+                    // 3. Active Projects (Teams)
+                    supabase
+                        .from('team_members')
+                        .select('id', { count: 'exact', head: true })
+                        .eq('user_id', user.id),
 
-            // 4. Critical Tasks (Top 5 High Priority Pending)
-            const { data: criticalData } = await supabase
-                .from('tasks')
-                .select(`
-                    id, title, deadline, priority, status, description, deliverables, organization_id,
-                    organization:custom_organizations(name),
-                    team:teams(name)
-                `)
-                .eq('assignee_id', user.id)
-                .neq('status', 'done')
-                .in('priority', ['high', 'medium'])
-                .order('deadline', { ascending: true })
-                .limit(5);
+                    // 4. Critical Tasks
+                    supabase
+                        .from('tasks')
+                        .select(`
+                            id, title, deadline, priority, status, description, deliverables, organization_id,
+                            organization:custom_organizations(name),
+                            team:teams(name)
+                        `)
+                        .eq('assignee_id', user.id)
+                        .neq('status', 'done')
+                        .in('priority', ['high', 'medium'])
+                        .order('deadline', { ascending: true })
+                        .limit(5),
 
-            // 5. Fetch User Note & Score
-            const { data: profileData } = await supabase
-                .from('profiles')
-                .select('score')
-                .eq('id', user.id)
-                .single();
+                    // 5. Score
+                    supabase
+                        .from('profiles')
+                        .select('score')
+                        .eq('id', user.id)
+                        .maybeSingle(),
 
-            const { data: noteData } = await supabase
-                .from('notes')
-                .select('content')
-                .eq('user_id', user.id)
-                .single();
+                    // 6. Note
+                    supabase
+                        .from('notes')
+                        .select('content')
+                        .eq('user_id', user.id)
+                        .maybeSingle()
+                ]);
 
-            if (noteData) {
-                setNote(noteData.content || '');
+                if (noteData) {
+                    setNote(noteData.content || '');
+                }
+
+                // Calc Stats
+                const tasksDue = dueTodayTasks?.length || 0;
+                const highPri = dueTodayTasks?.filter(t => t.priority === 'high').length || 0;
+
+                setStats({
+                    performance: profileData?.score || 0,
+                    tasksDueToday: tasksDue,
+                    highPriorityDue: highPri,
+                    completedThisWeek: completedCount || 0,
+                    activeProjects: activeTeamsCount || 0,
+                    pendingReviewProjects: 0
+                });
+
+                if (criticalData) {
+                    // @ts-ignore
+                    setCriticalTasks(criticalData);
+                }
+            } catch (error) {
+                console.error("Error fetching dashboard data:", error);
+            } finally {
+                setLoading(false);
             }
-
-            // Calc Stats
-            const tasksDue = dueTodayTasks?.length || 0;
-            const highPri = dueTodayTasks?.filter(t => t.priority === 'high').length || 0;
-
-            setStats({
-                performance: profileData?.score || 0,
-                tasksDueToday: tasksDue,
-                highPriorityDue: highPri,
-                completedThisWeek: completedCount || 0,
-                activeProjects: activeTeamsCount || 0,
-                pendingReviewProjects: 0 // Mock as no 'project' detail
-            });
-
-            if (criticalData) {
-                // @ts-ignore
-                setCriticalTasks(criticalData);
-            }
-
-            setLoading(false);
         };
 
         fetchDashboardData();
