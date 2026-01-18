@@ -80,9 +80,6 @@ export default function ProjectsPage() {
 
         if (type === 'organization' && id) {
             query = query.eq('organization_id', id);
-        } else {
-            // Personal context: show projects with NO organization
-            query = query.is('organization_id', null);
         }
 
         const { data: ownedProjects } = await query;
@@ -108,8 +105,6 @@ export default function ProjectsPage() {
 
             if (type === 'organization' && id) {
                 memberQuery = memberQuery.eq('organization_id', id);
-            } else {
-                memberQuery = memberQuery.is('organization_id', null);
             }
 
             const { data: additionalProjects } = await memberQuery;

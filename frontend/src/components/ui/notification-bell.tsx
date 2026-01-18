@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { createClient } from '@/lib/supabase/client';
 import { formatDistanceToNow } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { InvitationActionModal } from '@/components/modals/InvitationActionModal';
 
 interface Notification {
     id: string;
@@ -159,99 +160,99 @@ export function NotificationBell({ className }: { className?: string }) {
         }
     };
 
-    return (
-        <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className={cn("relative", className)}>
-                    <Bell className="h-5 w-5" />
-                    {unreadCount > 0 && (
-                        <Badge
-                            className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs"
-                            variant="destructive"
-                        >
-                            {unreadCount > 9 ? '9+' : unreadCount}
-                        </Badge>
-                    )}
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-80">
-                <div className="flex items-center justify-between p-3 border-b">
-                    <h3 className="font-semibold">Notifications</h3>
-                    {unreadCount > 0 && (
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            className="text-xs h-auto p-1"
-                            onClick={markAllAsRead}
-                        >
-                            Mark all read
-                        </Button>
-                    )}
-                </div>
-                <ScrollArea className="h-80">
-                    {notifications.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
-                            <Bell className="h-8 w-8 mb-2 opacity-50" />
-                            <p className="text-sm">No notifications</p>
-                        </div>
-                    ) : (
-                        <div className="divide-y">
-                            {notifications.map((notification) => (
-                                <div
-                                    key={notification.id}
-                                    className={`p-3 hover:bg-muted/50 transition-colors ${!notification.read ? 'bg-primary/5' : ''}`}
-                                    onClick={() => !notification.read && markAsRead(notification.id)}
-                                >
-                                    <div className="flex gap-3">
-                                        <div className="flex-shrink-0 mt-1">
-                                            {getNotificationIcon(notification.type)}
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium">{notification.title}</p>
-                                            <p className="text-xs text-muted-foreground line-clamp-2">
-                                                {notification.message}
-                                            </p>
-                                            <p className="text-xs text-muted-foreground/70 mt-1">
-                                                {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
-                                            </p>
+    const [selectedNotification, setSelectedNotification] = useState<Notification | null>(null);
 
-                                            {/* Action buttons for invitations */}
-                                            {notification.type === 'team_invite' && !notification.data?.responded && (
-                                                <div className="flex gap-2 mt-2">
-                                                    <Button
-                                                        size="sm"
-                                                        className="h-7 text-xs"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleInvitationAction(notification, true);
-                                                        }}
-                                                    >
-                                                        Accept
-                                                    </Button>
-                                                    <Button
-                                                        size="sm"
-                                                        variant="outline"
-                                                        className="h-7 text-xs"
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleInvitationAction(notification, false);
-                                                        }}
-                                                    >
-                                                        Decline
-                                                    </Button>
-                                                </div>
+    return (
+        <>
+            <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className={cn("relative", className)}>
+                        <Bell className="h-5 w-5" />
+                        {unreadCount > 0 && (
+                            <Badge
+                                className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center text-xs"
+                                variant="destructive"
+                            >
+                                {unreadCount > 9 ? '9+' : unreadCount}
+                            </Badge>
+                        )}
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-80">
+                    <div className="flex items-center justify-between p-3 border-b">
+                        <h3 className="font-semibold">Notifications</h3>
+                        {unreadCount > 0 && (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-xs h-auto p-1"
+                                onClick={markAllAsRead}
+                            >
+                                Mark all read
+                            </Button>
+                        )}
+                    </div>
+                    <ScrollArea className="h-80">
+                        {notifications.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
+                                <Bell className="h-8 w-8 mb-2 opacity-50" />
+                                <p className="text-sm">No notifications</p>
+                            </div>
+                        ) : (
+                            <div className="divide-y">
+                                {notifications.map((notification) => (
+                                    <div
+                                        key={notification.id}
+                                        className={`p-3 hover:bg-muted/50 transition-colors cursor-pointer ${!notification.read ? 'bg-primary/5' : ''}`}
+                                        onClick={() => {
+                                            if (notification.type === 'team_invite') {
+                                                setSelectedNotification(notification);
+                                                setIsOpen(false);
+                                            } else if (!notification.read) {
+                                                markAsRead(notification.id);
+                                            }
+                                        }}
+                                    >
+                                        <div className="flex gap-3">
+                                            <div className="flex-shrink-0 mt-1">
+                                                {getNotificationIcon(notification.type)}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-sm font-medium">{notification.title}</p>
+                                                <p className="text-xs text-muted-foreground line-clamp-2">
+                                                    {notification.message}
+                                                </p>
+                                                <p className="text-xs text-muted-foreground/70 mt-1">
+                                                    {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
+                                                </p>
+                                            </div>
+                                            {!notification.read && (
+                                                <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0 mt-2" />
                                             )}
                                         </div>
-                                        {!notification.read && (
-                                            <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0 mt-2" />
-                                        )}
                                     </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </ScrollArea>
-            </DropdownMenuContent>
-        </DropdownMenu>
+                                ))}
+                            </div>
+                        )}
+                    </ScrollArea>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            <InvitationActionModal
+                open={!!selectedNotification}
+                notification={selectedNotification}
+                onClose={() => setSelectedNotification(null)}
+                onSuccess={() => {
+                    // Update local state to mark as read
+                    if (selectedNotification) {
+                        setNotifications(prev =>
+                            prev.map(n => n.id === selectedNotification.id ? { ...n, read: true } : n)
+                        );
+                        setUnreadCount(prev => Math.max(0, prev - 1));
+                    }
+                    setSelectedNotification(null);
+                }}
+            />
+        </>
     );
 }

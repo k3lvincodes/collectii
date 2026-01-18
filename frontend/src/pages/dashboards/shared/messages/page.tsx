@@ -457,12 +457,14 @@ export default function MessagesPage() {
 
     // WebRTC Functions
     const createPeerConnection = () => {
+        console.log("createPeerConnection: Initializing RTCPeerConnection");
         const pc = new RTCPeerConnection({
             iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
         });
 
         pc.onicecandidate = (event) => {
             if (event.candidate && activeCallChannel.current) {
+                console.log("onicecandidate: Sending candidate");
                 activeCallChannel.current.send({
                     type: 'broadcast',
                     event: 'ice-candidate',
@@ -472,8 +474,13 @@ export default function MessagesPage() {
         };
 
         pc.ontrack = (event) => {
+            console.log("ontrack: Received remote stream", event.streams[0]);
             setRemoteStream(event.streams[0]);
             setCallState('connected');
+        };
+
+        pc.onconnectionstatechange = () => {
+            console.log("connectionState:", pc.connectionState);
         };
 
         return pc;

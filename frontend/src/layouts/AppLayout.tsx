@@ -29,6 +29,7 @@ export default function AppLayout() {
   const [needsUsername, setNeedsUsername] = useState(false)
   const [showCreateOrgModal, setShowCreateOrgModal] = useState(false)
   const [currentContext, setCurrentContext] = useState<WorkspaceContext>({ type: 'personal' })
+  const [hasTeams, setHasTeams] = useState(false) // Added
 
   const supabase = createClient()
   const location = useLocation()
@@ -39,11 +40,46 @@ export default function AppLayout() {
   const contextSlug = pathParts[2];
 
   useEffect(() => {
+    let channel: any;
+
     async function getUserData() {
       const { data: { user } } = await supabase.auth.getUser()
       setUser(user)
 
       if (user) {
+        // Function to check teams
+        const checkTeams = async () => {
+          try {
+            const { count } = await supabase
+              .from('team_members')
+              .select('*', { count: 'exact', head: true })
+              .eq('user_id', user.id);
+            setHasTeams((count || 0) > 0);
+          } catch (e) {
+            console.error(e);
+          }
+        };
+
+        // Initial check
+        checkTeams();
+
+        // Subscribe to changes
+        channel = supabase
+          .channel('team_members_updates')
+          .on(
+            'postgres_changes',
+            {
+              event: '*',
+              schema: 'public',
+              table: 'team_members',
+              filter: `user_id=eq.${user.id}`
+            },
+            (payload) => {
+              checkTeams();
+            }
+          )
+          .subscribe();
+
         const { data: profile } = await supabase
           .from('profiles')
           .select('username') // Removed account_type selection
@@ -67,6 +103,10 @@ export default function AppLayout() {
       }
     }
     getUserData()
+
+    return () => {
+      if (channel) supabase.removeChannel(channel);
+    }
   }, [])
 
   // Sync state with URL
@@ -124,6 +164,7 @@ export default function AppLayout() {
         currentContext={currentContext}
         currentSlug={contextSlug || ''}
         organizations={organizations}
+        hasTeams={hasTeams}
         onContextChange={handleContextChange}
         onCreateOrg={() => setShowCreateOrgModal(true)}
       />

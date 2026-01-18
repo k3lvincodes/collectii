@@ -268,9 +268,10 @@ CREATE TABLE IF NOT EXISTS team_invitations (
   team_id uuid REFERENCES teams(id) ON DELETE CASCADE,
   inviter_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
   invitee_id uuid REFERENCES profiles(id) ON DELETE CASCADE,
-  type text CHECK (type IN ('invite', 'recommendation')) NOT NULL,
-  status text CHECK (status IN ('pending', 'accepted', 'declined')) DEFAULT 'pending',
+  type text CHECK (type IN ('invite', 'recommendation')) NOT NULL DEFAULT 'invite',
+  status text CHECK (status IN ('pending', 'accepted', 'rejected', 'declined', 'expired')) DEFAULT 'pending',
   created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
+  updated_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL,
   responded_at timestamp with time zone,
   UNIQUE(team_id, invitee_id, status)
 );

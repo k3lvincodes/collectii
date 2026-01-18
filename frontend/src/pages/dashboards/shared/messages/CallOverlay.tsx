@@ -97,20 +97,23 @@ export function CallOverlay({
                 <div className="relative w-full max-w-4xl h-[80vh] bg-black rounded-2xl overflow-hidden shadow-2xl flex flex-col">
                     {/* Remote Stream (Main) */}
                     <div className="flex-1 relative bg-zinc-900 flex items-center justify-center">
-                        {type === 'video' && remoteStream ? (
-                            <video
-                                ref={remoteVideoRef}
-                                autoPlay
-                                playsInline
-                                className="w-full h-full object-cover"
-                            />
-                        ) : (
-                            <div className="flex flex-col items-center gap-4">
+                        {/* Remote Video - Always rendered for audio playback */}
+                        <video
+                            ref={remoteVideoRef}
+                            autoPlay
+                            playsInline
+                            className={`w-full h-full object-cover ${type !== 'video' ? 'hidden' : ''}`}
+                        />
+
+                        {/* Avatar Overlay for Audio Calls (or fallback) */}
+                        {(type === 'audio' || !remoteStream) && (
+                            <div className="flex flex-col items-center gap-4 absolute inset-0 justify-center z-10">
                                 <Avatar className="h-32 w-32 ring-4 ring-white/10">
                                     <AvatarImage src={partner?.avatar} />
                                     <AvatarFallback>{partner?.name?.[0]}</AvatarFallback>
                                 </Avatar>
                                 <h3 className="text-white text-xl font-medium">{partner?.name}</h3>
+                                {type === 'audio' && <span className="text-white/60 text-sm">Audio Call</span>}
                             </div>
                         )}
 

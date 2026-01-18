@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {
   Package2,
   Settings,
+  Users
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -21,8 +22,9 @@ interface AppSidebarProps {
   accountType: string;
   user: any;
   currentContext: { type: 'personal' | 'organization'; orgId?: string } | null;
-  currentSlug: string; // Add currentSlug prop
-  organizations: Organization[]; // Add organizations prop
+  currentSlug: string;
+  organizations: Organization[];
+  hasTeams?: boolean;
   onContextChange: (context: { type: 'personal' | 'organization'; orgId?: string; orgName?: string }) => void;
   onCreateOrg: () => void;
 }
@@ -86,6 +88,7 @@ export function SidebarContent({
   currentContext,
   currentSlug,
   organizations,
+  hasTeams,
   onContextChange,
   onCreateOrg,
   isExpanded,
@@ -98,11 +101,25 @@ export function SidebarContent({
   // Determine which navigation sections to show based on account type
   const navSections: NavSection[] =
     accountType === 'organization'
-      ? organizationNavSections
-      : individualNavSections;
+      ? [...organizationNavSections]
+      : [...individualNavSections];
 
   // Dynamic base path for links
   const basePath = `/app/${currentSlug}`;
+
+  // Logic to inject Teams section for individuals with teams
+  if (accountType === 'individual' && hasTeams) {
+    const hasTeamsSection = navSections.some(s => s.title === 'Teams' || s.title === 'Team Management');
+    if (!hasTeamsSection) {
+      const dashboardIndex = navSections.findIndex(s => s.title === 'Dashboard');
+      const insertIndex = dashboardIndex !== -1 ? dashboardIndex + 1 : 1;
+
+      navSections.splice(insertIndex, 0, {
+        title: 'Teams',
+        items: [{ href: `/app/teams`, icon: Users, label: 'My Teams' }]
+      });
+    }
+  }
 
   return (
     <div className={cn("flex h-full max-h-screen flex-col gap-2 p-4", className)}>
@@ -155,7 +172,20 @@ export function SidebarContent({
       <div className="flex-1 py-4">
         <nav className="space-y-1">
           {navSections.map((section) => {
-            const sectionRoute = getSectionRoute(section.title, accountType, currentSlug);
+
+            let sectionRoute = '';
+            if (section.title === 'Teams') {
+              // For injected 'Teams' section, we force usage of the item href if provided or construct it
+              // The item href we set is `/app/teams`. 
+              // However, we want it to be relative to the app structure if needed?
+              // Actually `/app/teams` is absolute. NavLinks handle it.
+              // But wait, the sectionRoute logic below uses `getSectionRoute`.
+              // Our injected item matches the route logic? Use item href.
+              sectionRoute = `${basePath}/teams`;
+            } else {
+              sectionRoute = getSectionRoute(section.title, accountType, currentSlug);
+            }
+
             const isActive = section.title === 'Dashboard'
               ? pathname === sectionRoute
               : pathname.startsWith(sectionRoute);

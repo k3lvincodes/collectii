@@ -43,32 +43,76 @@ export default function TeamsPage() {
   const supabase = createClient();
 
   const fetchTeams = async () => {
-    if (currentContext.type !== 'organization' || !currentContext.orgId) return;
+    // If Organization context
+    if (currentContext.type === 'organization' && currentContext.orgId) {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('teams')
+          .select(`
+                  *,
+                  lead:profiles!lead_id(full_name, avatar_url),
+                  members:team_members(count)
+              `)
+          .eq('organization_id', currentContext.orgId);
 
-    setLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from('teams')
-        .select(`
-              *,
-              lead:profiles!lead_id(full_name, avatar_url),
-              members:team_members(count)
-          `)
-        .eq('organization_id', currentContext.orgId);
+        if (error) throw error;
 
-      if (error) throw error;
+        const formattedTeams = data?.map(team => ({
+          ...team,
+          members: team.members?.[0]?.count || 0
+        })) || [];
 
-      // Map data to include member count properly
-      const formattedTeams = data?.map(team => ({
-        ...team,
-        members: team.members?.[0]?.count || 0
-      })) || [];
+        setTeams(formattedTeams);
+      } catch (error) {
+        console.error("Failed to fetch teams", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    // If Personal context - fetch teams user is a member of
+    else if (currentContext.type === 'personal') {
+      setLoading(true);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
 
-      setTeams(formattedTeams);
-    } catch (error) {
-      console.error("Failed to fetch teams", error);
-    } finally {
-      setLoading(false);
+        // Fetch team IDs first
+        const { data: memberships } = await supabase
+          .from('team_members')
+          .select('team_id')
+          .eq('user_id', user.id);
+
+        const teamIds = memberships?.map(m => m.team_id) || [];
+
+        if (teamIds.length === 0) {
+          setTeams([]);
+          setLoading(false);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from('teams')
+          .select(`
+                      *,
+                      lead:profiles!lead_id(full_name, avatar_url),
+                      members:team_members(count)
+                  `)
+          .in('id', teamIds);
+
+        if (error) throw error;
+
+        const formattedTeams = data?.map(team => ({
+          ...team,
+          members: team.members?.[0]?.count || 0
+        })) || [];
+
+        setTeams(formattedTeams);
+      } catch (error) {
+        console.error("Failed to fetch teams", error);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -130,9 +174,11 @@ export default function TeamsPage() {
           <div className="flex items-center justify-between">
             <h1 className="text-lg font-semibold md:text-2xl font-headline">Teams</h1>
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setShowAddMemberModal(true)}>
-                <UserPlus className="mr-2 h-4 w-4" /> {isOwnerOrAdmin ? 'Invite Member' : 'Recommend Member'}
-              </Button>
+              {currentContext.type === 'organization' && (
+                <Button variant="outline" onClick={() => setShowAddMemberModal(true)}>
+                  <UserPlus className="mr-2 h-4 w-4" /> {isOwnerOrAdmin ? 'Invite Member' : 'Recommend Member'}
+                </Button>
+              )}
               {isOwnerOrAdmin && (
                 <Button onClick={() => setShowCreateTeamModal(true)}>
                   <PlusCircle className="mr-2 h-4 w-4" /> Add Team
@@ -226,7 +272,9 @@ export default function TeamsPage() {
         onClose={() => setShowAddMemberModal(false)}
         organizationId={currentContext.orgId || ''}
         teams={teams}
-        onSuccess={handleMemberAdded}
+        onSuccess={() => {
+          fetchTeams();
+        }}
         isOwnerOrAdmin={isOwnerOrAdmin}
       />
 

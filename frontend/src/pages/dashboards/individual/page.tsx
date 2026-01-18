@@ -93,11 +93,11 @@ export default function IndividualDashboardPage() {
                         .eq('status', 'done')
                         .gte('updated_at', lastWeek),
 
-                    // 3. Active Projects (Teams)
+                    // 3. Active Projects
                     supabase
-                        .from('team_members')
+                        .from('projects')
                         .select('id', { count: 'exact', head: true })
-                        .eq('user_id', user.id),
+                        .eq('status', 'active'),
 
                     // 4. Critical Tasks
                     supabase
