@@ -461,27 +461,21 @@ export default function MessagesPage() {
         console.log("createPeerConnection: Initializing RTCPeerConnection");
         const pc = new RTCPeerConnection({
             iceServers: [
-                // Google STUN server
+                // Google STUN servers (reliable, free)
                 { urls: 'stun:stun.l.google.com:19302' },
-                { urls: 'stun:stun1.l.google.com:19302' },
-                // Free TURN servers from OpenRelay (metered.ca)
+                { urls: 'stun:stun2.l.google.com:19302' },
+                // Twilio free TURN server (more reliable)
                 {
-                    urls: 'turn:openrelay.metered.ca:80',
-                    username: 'openrelayproject',
-                    credential: 'openrelayproject'
+                    urls: 'turn:global.turn.twilio.com:3478?transport=udp',
+                    username: 'free',
+                    credential: 'free'
                 },
                 {
-                    urls: 'turn:openrelay.metered.ca:443',
-                    username: 'openrelayproject',
-                    credential: 'openrelayproject'
-                },
-                {
-                    urls: 'turn:openrelay.metered.ca:443?transport=tcp',
-                    username: 'openrelayproject',
-                    credential: 'openrelayproject'
+                    urls: 'turn:global.turn.twilio.com:443?transport=tcp',
+                    username: 'free',
+                    credential: 'free'
                 }
-            ],
-            iceCandidatePoolSize: 10
+            ]
         });
 
         pc.onicecandidate = (event) => {
