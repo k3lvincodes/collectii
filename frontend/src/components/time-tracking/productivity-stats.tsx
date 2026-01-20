@@ -112,34 +112,34 @@ export function ProductivityStats() {
     ];
 
     return (
-        <div className="space-y-6">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
                 {statCards.map((stat, idx) => (
                     <Card key={idx}>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-                            <stat.icon className={`h-4 w-4 ${stat.color}`} />
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 sm:pb-2 p-3 sm:p-6">
+                            <CardTitle className="text-xs sm:text-sm font-medium">{stat.title}</CardTitle>
+                            <stat.icon className={`h-3.5 sm:h-4 w-3.5 sm:w-4 ${stat.color}`} />
                         </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">{stat.value}</div>
+                        <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+                            <div className="text-xl sm:text-2xl font-bold">{stat.value}</div>
                         </CardContent>
                     </Card>
                 ))}
             </div>
 
             <Card>
-                <CardHeader>
-                    <CardTitle>Productivity Summary</CardTitle>
+                <CardHeader className="p-4 sm:p-6">
+                    <CardTitle className="text-base sm:text-lg">Productivity Summary</CardTitle>
                 </CardHeader>
-                <CardContent>
-                    <div className="space-y-4">
+                <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
+                    <div className="space-y-3 sm:space-y-4">
                         <div className="flex justify-between items-center">
-                            <span className="text-muted-foreground">Total Sessions This Month</span>
-                            <span className="font-bold">{stats.totalSessions}</span>
+                            <span className="text-muted-foreground text-sm sm:text-base">Total Sessions This Month</span>
+                            <span className="font-bold text-sm sm:text-base">{stats.totalSessions}</span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span className="text-muted-foreground">Average Session Length</span>
-                            <span className="font-bold">
+                            <span className="text-muted-foreground text-sm sm:text-base">Average Session Length</span>
+                            <span className="font-bold text-sm sm:text-base">
                                 {stats.totalSessions > 0
                                     ? `${Math.round(stats.monthHours / stats.totalSessions * 10) / 10}h`
                                     : '0h'
@@ -147,8 +147,8 @@ export function ProductivityStats() {
                             </span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span className="text-muted-foreground">Days Worked This Month</span>
-                            <span className="font-bold">
+                            <span className="text-muted-foreground text-sm sm:text-base">Days Worked This Month</span>
+                            <span className="font-bold text-sm sm:text-base">
                                 {stats.monthHours > 0
                                     ? Math.round(stats.monthHours / stats.avgDailyHours) || 0
                                     : 0

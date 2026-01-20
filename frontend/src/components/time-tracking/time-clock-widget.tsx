@@ -160,27 +160,27 @@ export function TimeClockWidget() {
             <div className="absolute top-0 right-0 p-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl" />
             <div className="absolute bottom-0 left-0 p-24 bg-black/10 rounded-full -ml-12 -mb-12 blur-xl" />
 
-            <CardContent className="flex flex-col items-center justify-center py-10 relative z-10 space-y-8">
+            <CardContent className="flex flex-col items-center justify-center py-6 sm:py-10 relative z-10 space-y-6 sm:space-y-8">
                 <div className="text-center space-y-1">
-                    <div className="text-sm font-medium opacity-80 uppercase tracking-widest">
+                    <div className="text-xs sm:text-sm font-medium opacity-80 uppercase tracking-widest">
                         {status === 'idle' ? 'Ready to Work' : status === 'working' ? 'Currently Working' : 'On Break'}
                     </div>
-                    <div className="text-7xl font-mono font-bold tracking-tighter">
+                    <div className="text-5xl sm:text-7xl font-mono font-bold tracking-tighter">
                         {formatTime(seconds)}
                     </div>
                     <div className="flex items-center justify-center gap-1.5 text-xs font-medium opacity-70">
-                        <MapPin className="h-3 w-3" /> {location}
+                        <MapPin className="h-3 w-3" /> <span className="truncate max-w-[200px] sm:max-w-none">{location}</span>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto px-4 sm:px-0">
                     {status === 'idle' && (
                         <Button
                             size="lg"
-                            className="h-14 px-8 bg-white text-indigo-600 hover:bg-white/90 font-bold rounded-full shadow-lg"
+                            className="h-12 sm:h-14 px-6 sm:px-8 w-full sm:w-auto bg-white text-indigo-600 hover:bg-white/90 font-bold rounded-full shadow-lg"
                             onClick={handleClockIn}
                         >
-                            <Play className="mr-2 h-5 w-5" fill="currentColor" /> Clock In
+                            <Play className="mr-2 h-4 sm:h-5 w-4 sm:w-5" fill="currentColor" /> Clock In
                         </Button>
                     )}
 
@@ -189,17 +189,17 @@ export function TimeClockWidget() {
                             <Button
                                 size="lg"
                                 variant="secondary"
-                                className="h-14 px-8 bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm font-bold rounded-full border-none"
+                                className="h-12 sm:h-14 px-6 sm:px-8 w-full sm:w-auto bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm font-bold rounded-full border-none"
                                 onClick={handleBreak}
                             >
-                                <Pause className="mr-2 h-5 w-5" fill="currentColor" /> Take Break
+                                <Pause className="mr-2 h-4 sm:h-5 w-4 sm:w-5" fill="currentColor" /> Take Break
                             </Button>
                             <Button
                                 size="lg"
-                                className="h-14 px-8 bg-black/40 text-white hover:bg-black/50 backdrop-blur-sm font-bold rounded-full border-0"
+                                className="h-12 sm:h-14 px-6 sm:px-8 w-full sm:w-auto bg-black/40 text-white hover:bg-black/50 backdrop-blur-sm font-bold rounded-full border-0"
                                 onClick={handleClockOut}
                             >
-                                <Square className="mr-2 h-5 w-5" fill="currentColor" /> Clock Out
+                                <Square className="mr-2 h-4 sm:h-5 w-4 sm:w-5" fill="currentColor" /> Clock Out
                             </Button>
                         </>
                     )}
@@ -207,10 +207,10 @@ export function TimeClockWidget() {
                     {status === 'break' && (
                         <Button
                             size="lg"
-                            className="h-14 px-8 bg-white text-indigo-600 hover:bg-white/90 font-bold rounded-full shadow-lg"
+                            className="h-12 sm:h-14 px-6 sm:px-8 w-full sm:w-auto bg-white text-indigo-600 hover:bg-white/90 font-bold rounded-full shadow-lg"
                             onClick={handleResume}
                         >
-                            <Play className="mr-2 h-5 w-5" fill="currentColor" /> Resume Work
+                            <Play className="mr-2 h-4 sm:h-5 w-4 sm:w-5" fill="currentColor" /> Resume Work
                         </Button>
                     )}
                 </div>

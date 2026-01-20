@@ -182,67 +182,71 @@ export default function IndividualDashboardPage() {
     }
 
     return (
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-            <div className="flex items-center justify-between">
-                <h1 className="text-lg font-semibold md:text-2xl font-headline">Account Overview</h1>
-                <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm">
-                        <CalendarDays className="mr-2 h-4 w-4" />
-                        Today
+        <main className="flex flex-1 flex-col gap-3 p-3 sm:gap-4 sm:p-4 lg:gap-6 lg:p-6">
+            <div className="flex items-center justify-between gap-2">
+                <h1 className="text-base font-semibold sm:text-lg md:text-2xl font-headline">Account Overview</h1>
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                    <Button variant="outline" size="sm" className="h-8 px-2 sm:px-3">
+                        <CalendarDays className="h-4 w-4 sm:mr-2" />
+                        <span className="hidden sm:inline">Today</span>
                     </Button>
-                    <Button size="sm" onClick={() => setIsTaskModalOpen(true)}>
-                        <PlusCircle className="mr-2 h-4 w-4" />
-                        New Task
+                    <Button size="sm" className="h-8 px-2 sm:px-3" onClick={() => setIsTaskModalOpen(true)}>
+                        <PlusCircle className="h-4 w-4 sm:mr-2" />
+                        <span className="hidden sm:inline">New Task</span>
                     </Button>
                 </div>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 lg:grid-cols-4">
                 <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Performance Score</CardTitle>
-                        <TrendingUp className="h-4 w-4 text-primary" />
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-1.5 sm:p-4 sm:pb-2">
+                        <CardTitle className="text-xs sm:text-sm font-medium">Performance Score</CardTitle>
+                        <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
                     </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{stats.performance}/100</div>
-                        <p className="text-xs text-green-500 flex items-center">
-                            <TrendingUp className="mr-1 h-3 w-3" />
-                            +{stats.completedThisWeek} pts this week
-                        </p>
+                    <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0">
+                        <div className="text-xl sm:text-2xl font-bold">{stats.performance}/100</div>
+                        {stats.completedThisWeek > 0 ? (
+                            <p className="text-[10px] sm:text-xs text-green-500 flex items-center">
+                                <TrendingUp className="mr-1 h-2.5 w-2.5 sm:h-3 sm:w-3" />
+                                +{stats.completedThisWeek} pts this week
+                            </p>
+                        ) : (
+                            <p className="text-[10px] sm:text-xs text-muted-foreground">{stats.completedThisWeek} pts this week</p>
+                        )}
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Tasks Due Today</CardTitle>
-                        <Clock className="h-4 w-4 text-primary" />
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-1.5 sm:p-4 sm:pb-2">
+                        <CardTitle className="text-xs sm:text-sm font-medium">Tasks Due Today</CardTitle>
+                        <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
                     </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{stats.tasksDueToday}</div>
-                        <p className="text-xs text-muted-foreground">
+                    <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0">
+                        <div className="text-xl sm:text-2xl font-bold">{stats.tasksDueToday}</div>
+                        <p className="text-[10px] sm:text-xs text-muted-foreground">
                             {stats.highPriorityDue} High Priority
                         </p>
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Completed This Week</CardTitle>
-                        <CheckCircle2 className="h-4 w-4 text-primary" />
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-1.5 sm:p-4 sm:pb-2">
+                        <CardTitle className="text-xs sm:text-sm font-medium">Completed This Week</CardTitle>
+                        <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
                     </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{stats.completedThisWeek}</div>
-                        <p className="text-xs text-muted-foreground">
+                    <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0">
+                        <div className="text-xl sm:text-2xl font-bold">{stats.completedThisWeek}</div>
+                        <p className="text-[10px] sm:text-xs text-muted-foreground">
                             On track for weekly goal
                         </p>
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Active Projects</CardTitle>
-                        <Activity className="h-4 w-4 text-primary" />
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-1.5 sm:p-4 sm:pb-2">
+                        <CardTitle className="text-xs sm:text-sm font-medium">Active Projects</CardTitle>
+                        <Activity className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
                     </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{stats.activeProjects}</div>
-                        <p className="text-xs text-muted-foreground">
+                    <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0">
+                        <div className="text-xl sm:text-2xl font-bold">{stats.activeProjects}</div>
+                        <p className="text-[10px] sm:text-xs text-muted-foreground">
                             {stats.pendingReviewProjects} pending review
                         </p>
                     </CardContent>
@@ -250,36 +254,36 @@ export default function IndividualDashboardPage() {
             </div>
 
 
-            <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-3 sm:gap-4 md:gap-6 lg:gap-8 lg:grid-cols-2 xl:grid-cols-3">
                 {/* Critical Task Stream */}
                 <Card className="xl:col-span-2">
-                    <CardHeader>
-                        <CardTitle>Critical Tasks</CardTitle>
-                        <CardDescription>High and Medium priority items requiring your attention.</CardDescription>
+                    <CardHeader className="p-3 pb-2 sm:p-4 sm:pb-3 md:p-6 md:pb-4">
+                        <CardTitle className="text-base sm:text-lg">Critical Tasks</CardTitle>
+                        <CardDescription className="text-xs sm:text-sm">High and Medium priority items requiring your attention.</CardDescription>
                     </CardHeader>
-                    <CardContent>
-                        <div className="space-y-4">
+                    <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0 md:p-6 md:pt-0">
+                        <div className="space-y-2 sm:space-y-3 md:space-y-4">
                             {criticalTasks.length === 0 ? (
-                                <p className="text-sm text-muted-foreground">No critical tasks pending.</p>
+                                <p className="text-xs sm:text-sm text-muted-foreground">No critical tasks pending.</p>
                             ) : (
                                 criticalTasks.map((task, i) => (
                                     <div
                                         key={i}
-                                        className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
-                                        onClick={() => setCriticalTasks(prev => prev.map(t => t.id === task.id ? task : t))} // Mock update or just select
+                                        className="p-2.5 sm:p-3 md:p-4 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer"
+                                        onClick={() => setCriticalTasks(prev => prev.map(t => t.id === task.id ? task : t))}
                                     >
                                         <div
-                                            className="flex-1 flex items-center justify-between"
+                                            className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"
                                             onClick={() => setSelectedTask(task)}
                                         >
-                                            <div className="space-y-1">
-                                                <p className="font-medium leading-none">{task.title}</p>
-                                                <p className="text-sm text-muted-foreground">
+                                            <div className="space-y-0.5 sm:space-y-1 min-w-0 flex-1">
+                                                <p className="font-medium leading-tight text-sm sm:text-base truncate">{task.title}</p>
+                                                <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">
                                                     {task.team?.name || task.organization?.name || 'Personal'} • Due {task.deadline ? format(new Date(task.deadline), 'MMM d, h:mm a') : 'No Date'}
                                                 </p>
                                             </div>
-                                            <div className="flex items-center gap-2">
-                                                <span className={`text-xs font-semibold uppercase ${getPriorityColor(task.priority)}`}>
+                                            <div className="flex items-center gap-2 shrink-0">
+                                                <span className={`text-[10px] sm:text-xs font-semibold uppercase ${getPriorityColor(task.priority)}`}>
                                                     {task.priority}
                                                 </span>
                                             </div>
@@ -293,24 +297,24 @@ export default function IndividualDashboardPage() {
 
                 {/* Quick Notes / Activity */}
                 <Card>
-                    <CardHeader>
-                        <CardTitle>Quick Notes</CardTitle>
+                    <CardHeader className="p-3 pb-2 sm:p-4 sm:pb-3 md:p-6 md:pb-4">
+                        <CardTitle className="text-base sm:text-lg">Quick Notes</CardTitle>
                     </CardHeader>
-                    <CardContent>
-                        <div className="space-y-4">
+                    <CardContent className="p-3 pt-0 sm:p-4 sm:pt-0 md:p-6 md:pt-0">
+                        <div className="space-y-3 sm:space-y-4">
                             <Textarea
                                 placeholder="Type your notes here..."
-                                className="min-h-[200px] resize-none"
+                                className="min-h-[150px] sm:min-h-[180px] md:min-h-[200px] resize-none text-sm sm:text-base"
                                 value={note}
                                 onChange={(e) => setNote(e.target.value)}
                             />
                             <Button
-                                className="w-full"
+                                className="w-full h-9 sm:h-10 text-sm"
                                 variant="secondary"
                                 onClick={handleSaveNote}
                                 disabled={savingNote}
                             >
-                                {savingNote ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                                {savingNote ? <Loader2 className="mr-2 h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin" /> : null}
                                 Save Note
                             </Button>
                         </div>

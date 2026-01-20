@@ -44,7 +44,7 @@ export function PerformanceScorecard({
                     {/* Big Score Section */}
                     <div>
                         <div className="flex items-center gap-3 mb-2">
-                            {score > 0 ? (
+                            {score > 0 && trend !== 0 ? (
                                 <>
                                     <span className={cn(
                                         "px-3 py-1 rounded-full text-sm font-bold shadow-sm",
@@ -55,7 +55,7 @@ export function PerformanceScorecard({
                                     <span className="text-gray-500 font-medium">vs last month</span>
                                 </>
                             ) : (
-                                <span className="text-gray-500 font-medium pl-1">+0 pts this week</span>
+                                <span className="text-gray-500 font-medium pl-1">---</span>
                             )}
                         </div>
                         <div className="flex items-baseline gap-1">

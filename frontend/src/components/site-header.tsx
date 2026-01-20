@@ -173,7 +173,7 @@ export function SiteHeader() {
                     )
                   ))}
                 </div>
-                <div className="mt-auto flex flex-col gap-2">
+                <div className="mt-auto flex flex-col gap-2 items-center">
                   {/* Mobile Menu Auth State */}
                   {isAuthenticated ? (
                     <>

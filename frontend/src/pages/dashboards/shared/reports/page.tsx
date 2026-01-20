@@ -1,8 +1,8 @@
 
 import { useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileDown, Loader2 } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { FileDown, Loader2, BarChart3 } from "lucide-react";
 import {
   BarChart,
   Bar,
@@ -129,7 +129,7 @@ export default function ReportsPage() {
       });
 
       const activity = last7Days.map(date => {
-        const dayStr = format(date, 'yyyy-MM-dd');
+        const dayStr = format(date, 'MMM d'); // Shorter format for mobile
         const entry: any = { date: dayStr };
 
         // Initialize 0 for all teams
@@ -166,10 +166,18 @@ export default function ReportsPage() {
   return (
     <>
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-        <div className="container px-0">
-          <div className="flex items-center justify-between">
-            <h1 className="text-lg font-semibold md:text-2xl font-headline">Reports</h1>
-            <Button variant="outline"><FileDown className="mr-2 h-4 w-4" /> Export (PDF/CSV)</Button>
+        <div className="container px-0 space-y-4 sm:space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between gap-3">
+            <h1 className="text-xl sm:text-2xl font-semibold font-headline">Reports</h1>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-9 px-3 sm:px-4"
+            >
+              <FileDown className="h-4 w-4" />
+              <span className="hidden sm:inline ml-2">Export (PDF/CSV)</span>
+            </Button>
           </div>
 
           {loading ? (
@@ -177,55 +185,123 @@ export default function ReportsPage() {
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : (
-            <div className="grid gap-8 mt-6">
+            <div className="grid gap-4 sm:gap-6">
+              {/* Team Task Completion Chart */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Team Task Completion (%)</CardTitle>
+                <CardHeader className="p-4 sm:p-6">
+                  <CardTitle className="text-base sm:text-lg">Team Task Completion</CardTitle>
+                  <CardDescription className="text-xs sm:text-sm">Percentage of completed tasks by team</CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-2 sm:p-6 pt-0 sm:pt-0">
                   {completionData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height={300}>
-                      <BarChart data={completionData}>
-                        <XAxis dataKey="team" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
-                        <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} unit="%" />
-                        <Tooltip cursor={{ fill: 'hsl(var(--accent))' }} contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }} />
+                    <ResponsiveContainer width="100%" height={220} className="sm:!h-[300px]">
+                      <BarChart data={completionData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
+                        <XAxis
+                          dataKey="team"
+                          stroke="hsl(var(--muted-foreground))"
+                          fontSize={10}
+                          tickLine={false}
+                          axisLine={false}
+                          interval={0}
+                          angle={-45}
+                          textAnchor="end"
+                          height={60}
+                        />
+                        <YAxis
+                          stroke="hsl(var(--muted-foreground))"
+                          fontSize={10}
+                          tickLine={false}
+                          axisLine={false}
+                          unit="%"
+                          width={35}
+                        />
+                        <Tooltip
+                          cursor={{ fill: 'hsl(var(--accent))' }}
+                          contentStyle={{
+                            backgroundColor: 'hsl(var(--background))',
+                            border: '1px solid hsl(var(--border))',
+                            fontSize: '12px',
+                            borderRadius: '8px'
+                          }}
+                        />
                         <Bar dataKey="completion" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                       </BarChart>
                     </ResponsiveContainer>
                   ) : (
-                    <div className="flex items-center justify-center h-[300px] text-muted-foreground">
-                      No team data available
+                    <div className="flex flex-col items-center justify-center h-[200px] sm:h-[300px] text-center">
+                      <BarChart3 className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground/50 mb-3" />
+                      <p className="text-muted-foreground text-sm">No team data available</p>
                     </div>
                   )}
                 </CardContent>
               </Card>
 
+              {/* Team Activity Chart */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Team Activity (Tasks Completed per Day)</CardTitle>
+                <CardHeader className="p-4 sm:p-6">
+                  <CardTitle className="text-base sm:text-lg">Team Activity</CardTitle>
+                  <CardDescription className="text-xs sm:text-sm">Tasks completed per day (last 7 days)</CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-2 sm:p-6 pt-0 sm:pt-0">
                   {activityData.length > 0 && teams.length > 0 ? (
-                    <ResponsiveContainer width="100%" height={300}>
-                      <LineChart data={activityData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                        <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-                        <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
-                        <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }} />
-                        <Legend wrapperStyle={{ fontSize: "14px" }} />
-                        {teams.map((team, index) => (
-                          <Line
-                            key={team.id}
-                            type="monotone"
-                            dataKey={team.name}
-                            stroke={colors[index % colors.length]}
+                    <>
+                      <ResponsiveContainer width="100%" height={220} className="sm:!h-[300px]">
+                        <LineChart data={activityData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                          <XAxis
+                            dataKey="date"
+                            stroke="hsl(var(--muted-foreground))"
+                            fontSize={10}
+                            tickLine={false}
                           />
+                          <YAxis
+                            stroke="hsl(var(--muted-foreground))"
+                            fontSize={10}
+                            tickLine={false}
+                            width={25}
+                          />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: 'hsl(var(--background))',
+                              border: '1px solid hsl(var(--border))',
+                              fontSize: '12px',
+                              borderRadius: '8px'
+                            }}
+                          />
+                          <Legend
+                            wrapperStyle={{ fontSize: "10px", paddingTop: "10px" }}
+                            iconSize={8}
+                          />
+                          {teams.map((team, index) => (
+                            <Line
+                              key={team.id}
+                              type="monotone"
+                              dataKey={team.name}
+                              stroke={colors[index % colors.length]}
+                              strokeWidth={2}
+                              dot={{ r: 3 }}
+                              activeDot={{ r: 5 }}
+                            />
+                          ))}
+                        </LineChart>
+                      </ResponsiveContainer>
+                      {/* Mobile Legend Enhancement */}
+                      <div className="grid grid-cols-2 gap-2 mt-4 sm:hidden">
+                        {teams.map((team, index) => (
+                          <div key={team.id} className="flex items-center gap-2">
+                            <div
+                              className="w-3 h-3 rounded-full flex-shrink-0"
+                              style={{ backgroundColor: colors[index % colors.length] }}
+                            />
+                            <span className="text-xs text-muted-foreground truncate">{team.name}</span>
+                          </div>
                         ))}
-                      </LineChart>
-                    </ResponsiveContainer>
+                      </div>
+                    </>
                   ) : (
-                    <div className="flex items-center justify-center h-[300px] text-muted-foreground">
-                      No activity data available
+                    <div className="flex flex-col items-center justify-center h-[200px] sm:h-[300px] text-center">
+                      <BarChart3 className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground/50 mb-3" />
+                      <p className="text-muted-foreground text-sm">No activity data available</p>
                     </div>
                   )}
                 </CardContent>
@@ -237,3 +313,4 @@ export default function ReportsPage() {
     </>
   );
 }
+

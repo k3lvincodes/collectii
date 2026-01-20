@@ -188,26 +188,26 @@ export default function ProfileSettings() {
 
     return (
         <Card className="max-w-4xl mx-auto">
-            <CardHeader>
-                <CardTitle>Profile Settings</CardTitle>
-                <CardDescription>
+            <CardHeader className="p-4 sm:p-6">
+                <CardTitle className="text-lg sm:text-xl">Profile Settings</CardTitle>
+                <CardDescription className="text-sm">
                     Manage your public profile and how others see you on the platform.
                 </CardDescription>
             </CardHeader>
-            <CardContent>
-                <div className="mb-8 flex items-center gap-6">
-                    <Avatar className="h-24 w-24">
+            <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+                <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+                    <Avatar className="h-20 w-20 sm:h-24 sm:w-24">
                         <AvatarImage src={avatarUrl || ''} />
-                        <AvatarFallback className="text-xl">
+                        <AvatarFallback className="text-lg sm:text-xl">
                             {form.watch('full_name')?.charAt(0) || 'U'}
                         </AvatarFallback>
                     </Avatar>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 text-center sm:text-left">
                         <h3 className="font-medium">Profile Picture</h3>
                         <p className="text-sm text-muted-foreground">
                             JPG, GIF or PNG. Max size of 2MB.
                         </p>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center justify-center sm:justify-start gap-2">
                             <Button variant="outline" size="sm" className="relative cursor-pointer" disabled={isUploading}>
                                 {isUploading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Upload className="h-4 w-4 mr-2" />}
                                 Upload New
@@ -223,7 +223,7 @@ export default function ProfileSettings() {
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    onClick={() => setAvatarUrl(null)} // This logic needs to actually update DB to null if we want to delete
+                                    onClick={() => setAvatarUrl(null)}
                                     className="text-destructive hover:text-destructive"
                                 >
                                     Remove
@@ -234,8 +234,8 @@ export default function ProfileSettings() {
                 </div>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                        <div className="grid gap-4 md:grid-cols-2">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
+                        <div className="grid gap-4 sm:grid-cols-2">
                             <FormField
                                 control={form.control}
                                 name="full_name"
@@ -309,8 +309,8 @@ export default function ProfileSettings() {
                         />
 
                         <div>
-                            <h3 className="mb-4 text-lg font-medium">Social Links</h3>
-                            <div className="grid gap-4 md:grid-cols-2">
+                            <h3 className="mb-3 sm:mb-4 text-base sm:text-lg font-medium">Social Links</h3>
+                            <div className="grid gap-4 sm:grid-cols-2">
                                 <FormField
                                     control={form.control}
                                     name="website"
@@ -378,7 +378,7 @@ export default function ProfileSettings() {
                             </div>
                         </div>
 
-                        <Button type="submit" disabled={isLoading}>
+                        <Button type="submit" disabled={isLoading} className="w-full sm:w-auto">
                             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             <Save className="mr-2 h-4 w-4" />
                             Save Changes

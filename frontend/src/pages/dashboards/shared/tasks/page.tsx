@@ -241,337 +241,506 @@ export default function TasksPage() {
 
   return (
     <div className="min-h-screen bg-gray-50/50 dark:bg-background flex flex-col">
-      <div className="flex-1 p-6 max-w-[1600px] mx-auto w-full space-y-6">
+      <div className="flex-1 p-3 sm:p-4 md:p-6 max-w-[1600px] mx-auto w-full space-y-3 sm:space-y-4 md:space-y-6">
 
         {/* Header Area */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Tasks</h1>
-            <p className="text-muted-foreground text-sm">Manage your work, track progress, and collaborate.</p>
+        <div className="flex items-center justify-between gap-2">
+          <div className="min-w-0">
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight">Tasks</h1>
+            <p className="text-muted-foreground text-xs sm:text-sm hidden sm:block">Manage your work, track progress, and collaborate.</p>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm">
-              <Filter className="mr-2 h-4 w-4" /> Filter
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <Button variant="outline" size="sm" className="h-8 px-2 sm:px-3">
+              <Filter className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">Filter</span>
             </Button>
-            <Button size="sm" onClick={() => setShowCreateModal(true)}>
-              <Plus className="mr-2 h-4 w-4" /> New Task
+            <Button size="sm" className="h-8 px-2 sm:px-3" onClick={() => setShowCreateModal(true)}>
+              <Plus className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">New Task</span>
             </Button>
           </div>
         </div>
 
         {/* Smart Tabs System */}
-        <Tabs defaultValue="active" className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <TabsList className="w-full sm:w-auto grid grid-cols-2 sm:flex">
-              <TabsTrigger value="active">My Active Tasks</TabsTrigger>
-              <TabsTrigger value="assigned">Assigned by Others</TabsTrigger>
-              <TabsTrigger value="review">Review Pipeline</TabsTrigger>
-              <TabsTrigger value="drafts">Drafts & Templates</TabsTrigger>
-            </TabsList>
+        <Tabs defaultValue="active" className="space-y-3 sm:space-y-4 md:space-y-6">
+          <div className="flex flex-col gap-3 sm:gap-4">
+            <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
+              <TabsList className="w-max sm:w-auto inline-flex">
+                <TabsTrigger value="active" className="text-xs sm:text-sm px-2.5 sm:px-3">Active</TabsTrigger>
+                <TabsTrigger value="assigned" className="text-xs sm:text-sm px-2.5 sm:px-3">Assigned</TabsTrigger>
+                <TabsTrigger value="review" className="text-xs sm:text-sm px-2.5 sm:px-3">Review</TabsTrigger>
+                <TabsTrigger value="drafts" className="text-xs sm:text-sm px-2.5 sm:px-3">Drafts</TabsTrigger>
+              </TabsList>
+            </div>
 
-            <div className="relative w-full sm:w-72">
+            <div className="relative w-full sm:max-w-xs">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
                 placeholder="Search tasks..."
-                className="pl-9 bg-background"
+                className="pl-9 bg-background h-9 text-sm"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </div>
 
-          <TabsContent value="active" className="space-y-4">
+          <TabsContent value="active" className="space-y-3 sm:space-y-4">
             {filteredActive.length === 0 ? (
-              <div className="flex flex-col items-center justify-center p-12 border border-dashed rounded-lg bg-card">
-                <p className="text-muted-foreground mb-4">No active tasks.</p>
-                <Button variant="outline" onClick={() => setShowCreateModal(true)}>Create Task</Button>
+              <div className="flex flex-col items-center justify-center p-8 sm:p-12 border border-dashed rounded-lg bg-card">
+                <p className="text-muted-foreground text-sm mb-4">No active tasks.</p>
+                <Button variant="outline" size="sm" onClick={() => setShowCreateModal(true)}>Create Task</Button>
               </div>
             ) : (
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[400px]">Task Name</TableHead>
-                      <TableHead>Project</TableHead>
-                      <TableHead>Priority</TableHead>
-                      <TableHead>Due Date</TableHead>
-                      <TableHead className="w-[150px]">Progress</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredActive.map((task) => (
-                      <TableRow
-                        key={task.id}
-                        className="cursor-pointer hover:bg-muted/50"
-                        onClick={() => setSelectedTask(task)}
-                      >
-                        <TableCell className="font-medium">
-                          <div className="flex items-center gap-3">
-                            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-semibold text-xs">
-                              {getProjectName(task).charAt(0)}
-                            </div>
-                            <div className="flex flex-col">
-                              <span className="font-semibold text-sm">{task.title}</span>
-                              <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                                <span className="flex items-center gap-1"><MessageSquare className="h-3 w-3" /> 2</span>
-                                <span className="flex items-center gap-1"><Paperclip className="h-3 w-3" /> 1</span>
-                              </div>
-                            </div>
+              <>
+                {/* Mobile Card View */}
+                <div className="md:hidden space-y-2">
+                  {filteredActive.map((task) => (
+                    <div
+                      key={task.id}
+                      className="p-3 border rounded-lg bg-card cursor-pointer hover:bg-muted/50 transition-colors"
+                      onClick={() => setSelectedTask(task)}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-semibold text-xs shrink-0">
+                            {getProjectName(task).charAt(0)}
                           </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="font-normal">{getProjectName(task)}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              task.priority === 'high' ? 'destructive' :
-                                task.priority === 'medium' ? 'secondary' : 'outline'
-                            }
-                          >
-                            {task.priority}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Calendar className="h-4 w-4" />
-                            {formatDeadline(task.deadline)}
+                          <div className="min-w-0 flex-1">
+                            <p className="font-semibold text-sm truncate">{task.title}</p>
+                            <p className="text-xs text-muted-foreground truncate">{getProjectName(task)}</p>
                           </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Progress value={getProgress(task.status)} className="h-2" />
-                            <span className="text-xs text-muted-foreground w-8 text-right">{getProgress(task.status)}%</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+                        </div>
+                        <div onClick={(e) => e.stopPropagation()}>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon">
+                              <Button variant="ghost" size="icon" className="h-7 w-7">
                                 <MoreHorizontal className="h-4 w-4" />
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuItem onClick={(e) => {
-                                e.stopPropagation();
-                                setEditingTask(task);
-                              }}>
-                                Edit
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="text-destructive focus:text-destructive"
-                                onClick={(e) => handleDelete(e, task.id)}
-                              >
-                                Delete
-                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setEditingTask(task); }}>Edit</DropdownMenuItem>
+                              <DropdownMenuItem className="text-destructive" onClick={(e) => handleDelete(e, task.id)}>Delete</DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
-                        </TableCell>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2.5 flex-wrap">
+                        <Badge
+                          variant={task.priority === 'high' ? 'destructive' : task.priority === 'medium' ? 'secondary' : 'outline'}
+                          className="text-[10px] px-1.5 py-0"
+                        >
+                          {task.priority}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {formatDeadline(task.deadline)}
+                        </span>
+                        <div className="flex items-center gap-1.5 ml-auto">
+                          <Progress value={getProgress(task.status)} className="h-1.5 w-12" />
+                          <span className="text-[10px] text-muted-foreground">{getProgress(task.status)}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop Table View */}
+                <div className="hidden md:block rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-[400px]">Task Name</TableHead>
+                        <TableHead>Project</TableHead>
+                        <TableHead>Priority</TableHead>
+                        <TableHead>Due Date</TableHead>
+                        <TableHead className="w-[150px]">Progress</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredActive.map((task) => (
+                        <TableRow
+                          key={task.id}
+                          className="cursor-pointer hover:bg-muted/50"
+                          onClick={() => setSelectedTask(task)}
+                        >
+                          <TableCell className="font-medium">
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-semibold text-xs">
+                                {getProjectName(task).charAt(0)}
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="font-semibold text-sm">{task.title}</span>
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+                                  <span className="flex items-center gap-1"><MessageSquare className="h-3 w-3" /> 2</span>
+                                  <span className="flex items-center gap-1"><Paperclip className="h-3 w-3" /> 1</span>
+                                </div>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="font-normal">{getProjectName(task)}</Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={
+                                task.priority === 'high' ? 'destructive' :
+                                  task.priority === 'medium' ? 'secondary' : 'outline'
+                              }
+                            >
+                              {task.priority}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <Calendar className="h-4 w-4" />
+                              {formatDeadline(task.deadline)}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <Progress value={getProgress(task.status)} className="h-2" />
+                              <span className="text-xs text-muted-foreground w-8 text-right">{getProgress(task.status)}%</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={(e) => {
+                                  e.stopPropagation();
+                                  setEditingTask(task);
+                                }}>
+                                  Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  className="text-destructive focus:text-destructive"
+                                  onClick={(e) => handleDelete(e, task.id)}
+                                >
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </>
             )}
           </TabsContent>
 
-          <TabsContent value="assigned" className="space-y-4">
+          <TabsContent value="assigned" className="space-y-3 sm:space-y-4">
             {filteredAssigned.length === 0 ? (
-              <div className="flex flex-col items-center justify-center p-12 border border-dashed rounded-lg bg-card">
-                <p className="text-muted-foreground mb-4">No tasks assigned to you by others.</p>
+              <div className="flex flex-col items-center justify-center p-8 sm:p-12 border border-dashed rounded-lg bg-card">
+                <p className="text-muted-foreground text-sm mb-4">No tasks assigned to you by others.</p>
               </div>
             ) : (
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[400px]">Task Name</TableHead>
-                      <TableHead>Project</TableHead>
-                      <TableHead>Priority</TableHead>
-                      <TableHead>Due Date</TableHead>
-                      <TableHead className="w-[150px]">Progress</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredAssigned.map((task) => (
-                      <TableRow
-                        key={task.id}
-                        className="cursor-pointer hover:bg-muted/50"
-                        onClick={() => setSelectedTask(task)}
-                      >
-                        <TableCell className="font-medium">
-                          <div className="flex items-center gap-3">
-                            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-semibold text-xs">
-                              {getProjectName(task).charAt(0)}
-                            </div>
-                            <div className="flex flex-col">
-                              <span className="font-semibold text-sm">{task.title}</span>
-                              <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                                <span className="flex items-center gap-1"><MessageSquare className="h-3 w-3" /> 2</span>
-                                <span className="flex items-center gap-1"><Paperclip className="h-3 w-3" /> 1</span>
-                              </div>
-                            </div>
+              <>
+                {/* Mobile Card View */}
+                <div className="md:hidden space-y-2">
+                  {filteredAssigned.map((task) => (
+                    <div
+                      key={task.id}
+                      className="p-3 border rounded-lg bg-card cursor-pointer hover:bg-muted/50 transition-colors"
+                      onClick={() => setSelectedTask(task)}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-semibold text-xs shrink-0">
+                            {getProjectName(task).charAt(0)}
                           </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="font-normal">{getProjectName(task)}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              task.priority === 'high' ? 'destructive' :
-                                task.priority === 'medium' ? 'secondary' : 'outline'
-                            }
-                          >
-                            {task.priority}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Calendar className="h-4 w-4" />
-                            {formatDeadline(task.deadline)}
+                          <div className="min-w-0 flex-1">
+                            <p className="font-semibold text-sm truncate">{task.title}</p>
+                            <p className="text-xs text-muted-foreground truncate">{getProjectName(task)}</p>
                           </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Progress value={getProgress(task.status)} className="h-2" />
-                            <span className="text-xs text-muted-foreground w-8 text-right">{getProgress(task.status)}%</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+                        </div>
+                        <div onClick={(e) => e.stopPropagation()}>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon">
+                              <Button variant="ghost" size="icon" className="h-7 w-7">
                                 <MoreHorizontal className="h-4 w-4" />
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuItem onClick={(e) => {
-                                e.stopPropagation();
-                                setEditingTask(task);
-                              }}>
-                                Edit
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="text-destructive focus:text-destructive"
-                                onClick={(e) => handleDelete(e, task.id)}
-                              >
-                                Delete
-                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setEditingTask(task); }}>Edit</DropdownMenuItem>
+                              <DropdownMenuItem className="text-destructive" onClick={(e) => handleDelete(e, task.id)}>Delete</DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
-                        </TableCell>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2.5 flex-wrap">
+                        <Badge
+                          variant={task.priority === 'high' ? 'destructive' : task.priority === 'medium' ? 'secondary' : 'outline'}
+                          className="text-[10px] px-1.5 py-0"
+                        >
+                          {task.priority}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {formatDeadline(task.deadline)}
+                        </span>
+                        <div className="flex items-center gap-1.5 ml-auto">
+                          <Progress value={getProgress(task.status)} className="h-1.5 w-12" />
+                          <span className="text-[10px] text-muted-foreground">{getProgress(task.status)}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop Table View */}
+                <div className="hidden md:block rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-[400px]">Task Name</TableHead>
+                        <TableHead>Project</TableHead>
+                        <TableHead>Priority</TableHead>
+                        <TableHead>Due Date</TableHead>
+                        <TableHead className="w-[150px]">Progress</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredAssigned.map((task) => (
+                        <TableRow
+                          key={task.id}
+                          className="cursor-pointer hover:bg-muted/50"
+                          onClick={() => setSelectedTask(task)}
+                        >
+                          <TableCell className="font-medium">
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-semibold text-xs">
+                                {getProjectName(task).charAt(0)}
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="font-semibold text-sm">{task.title}</span>
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+                                  <span className="flex items-center gap-1"><MessageSquare className="h-3 w-3" /> 2</span>
+                                  <span className="flex items-center gap-1"><Paperclip className="h-3 w-3" /> 1</span>
+                                </div>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="font-normal">{getProjectName(task)}</Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={
+                                task.priority === 'high' ? 'destructive' :
+                                  task.priority === 'medium' ? 'secondary' : 'outline'
+                              }
+                            >
+                              {task.priority}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <Calendar className="h-4 w-4" />
+                              {formatDeadline(task.deadline)}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <Progress value={getProgress(task.status)} className="h-2" />
+                              <span className="text-xs text-muted-foreground w-8 text-right">{getProgress(task.status)}%</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={(e) => {
+                                  e.stopPropagation();
+                                  setEditingTask(task);
+                                }}>
+                                  Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  className="text-destructive focus:text-destructive"
+                                  onClick={(e) => handleDelete(e, task.id)}
+                                >
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </>
             )}
           </TabsContent>
 
-          <TabsContent value="review" className="space-y-4">
+          <TabsContent value="review" className="space-y-3 sm:space-y-4">
             {filteredReview.length === 0 ? (
-              <div className="flex flex-col items-center justify-center p-12 border border-dashed rounded-lg bg-card">
-                <p className="text-muted-foreground mb-4">No tasks waiting for review.</p>
-                <Button variant="outline">View Archive</Button>
+              <div className="flex flex-col items-center justify-center p-8 sm:p-12 border border-dashed rounded-lg bg-card">
+                <p className="text-muted-foreground text-sm mb-4">No tasks waiting for review.</p>
+                <Button variant="outline" size="sm">View Archive</Button>
               </div>
             ) : (
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="w-[400px]">Task Name</TableHead>
-                      <TableHead>Project</TableHead>
-                      <TableHead>Priority</TableHead>
-                      <TableHead>Due Date</TableHead>
-                      <TableHead className="w-[150px]">Progress</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredReview.map((task) => (
-                      <TableRow
-                        key={task.id}
-                        className="cursor-pointer hover:bg-muted/50"
-                        onClick={() => setSelectedTask(task)}
-                      >
-                        <TableCell className="font-medium">
-                          <div className="flex items-center gap-3">
-                            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-semibold text-xs">
-                              {getProjectName(task).charAt(0)}
-                            </div>
-                            <div className="flex flex-col">
-                              <span className="font-semibold text-sm">{task.title}</span>
-                              <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                                <span className="flex items-center gap-1"><MessageSquare className="h-3 w-3" /> 2</span>
-                                <span className="flex items-center gap-1"><Paperclip className="h-3 w-3" /> 1</span>
-                              </div>
-                            </div>
+              <>
+                {/* Mobile Card View */}
+                <div className="md:hidden space-y-2">
+                  {filteredReview.map((task) => (
+                    <div
+                      key={task.id}
+                      className="p-3 border rounded-lg bg-card cursor-pointer hover:bg-muted/50 transition-colors"
+                      onClick={() => setSelectedTask(task)}
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-semibold text-xs shrink-0">
+                            {getProjectName(task).charAt(0)}
                           </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="font-normal">{getProjectName(task)}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              task.priority === 'high' ? 'destructive' :
-                                task.priority === 'medium' ? 'secondary' : 'outline'
-                            }
-                          >
-                            {task.priority}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Calendar className="h-4 w-4" />
-                            {formatDeadline(task.deadline)}
+                          <div className="min-w-0 flex-1">
+                            <p className="font-semibold text-sm truncate">{task.title}</p>
+                            <p className="text-xs text-muted-foreground truncate">{getProjectName(task)}</p>
                           </div>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Progress value={getProgress(task.status)} className="h-2" />
-                            <span className="text-xs text-muted-foreground w-8 text-right">{getProgress(task.status)}%</span>
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+                        </div>
+                        <div onClick={(e) => e.stopPropagation()}>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon">
+                              <Button variant="ghost" size="icon" className="h-7 w-7">
                                 <MoreHorizontal className="h-4 w-4" />
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuItem onClick={(e) => {
-                                e.stopPropagation();
-                                setEditingTask(task);
-                              }}>
-                                Edit
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="text-destructive focus:text-destructive"
-                                onClick={(e) => handleDelete(e, task.id)}
-                              >
-                                Delete
-                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={(e) => { e.stopPropagation(); setEditingTask(task); }}>Edit</DropdownMenuItem>
+                              <DropdownMenuItem className="text-destructive" onClick={(e) => handleDelete(e, task.id)}>Delete</DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
-                        </TableCell>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2.5 flex-wrap">
+                        <Badge
+                          variant={task.priority === 'high' ? 'destructive' : task.priority === 'medium' ? 'secondary' : 'outline'}
+                          className="text-[10px] px-1.5 py-0"
+                        >
+                          {task.priority}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {formatDeadline(task.deadline)}
+                        </span>
+                        <div className="flex items-center gap-1.5 ml-auto">
+                          <Progress value={getProgress(task.status)} className="h-1.5 w-12" />
+                          <span className="text-[10px] text-muted-foreground">{getProgress(task.status)}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop Table View */}
+                <div className="hidden md:block rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-[400px]">Task Name</TableHead>
+                        <TableHead>Project</TableHead>
+                        <TableHead>Priority</TableHead>
+                        <TableHead>Due Date</TableHead>
+                        <TableHead className="w-[150px]">Progress</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredReview.map((task) => (
+                        <TableRow
+                          key={task.id}
+                          className="cursor-pointer hover:bg-muted/50"
+                          onClick={() => setSelectedTask(task)}
+                        >
+                          <TableCell className="font-medium">
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-semibold text-xs">
+                                {getProjectName(task).charAt(0)}
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="font-semibold text-sm">{task.title}</span>
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+                                  <span className="flex items-center gap-1"><MessageSquare className="h-3 w-3" /> 2</span>
+                                  <span className="flex items-center gap-1"><Paperclip className="h-3 w-3" /> 1</span>
+                                </div>
+                              </div>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="font-normal">{getProjectName(task)}</Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={
+                                task.priority === 'high' ? 'destructive' :
+                                  task.priority === 'medium' ? 'secondary' : 'outline'
+                              }
+                            >
+                              {task.priority}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <Calendar className="h-4 w-4" />
+                              {formatDeadline(task.deadline)}
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <Progress value={getProgress(task.status)} className="h-2" />
+                              <span className="text-xs text-muted-foreground w-8 text-right">{getProgress(task.status)}%</span>
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon">
+                                  <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={(e) => {
+                                  e.stopPropagation();
+                                  setEditingTask(task);
+                                }}>
+                                  Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  className="text-destructive focus:text-destructive"
+                                  onClick={(e) => handleDelete(e, task.id)}
+                                >
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </>
             )}
           </TabsContent>
 
-          <TabsContent value="drafts" className="space-y-4">
-            <div className="flex flex-col items-center justify-center p-12 border border-dashed rounded-lg bg-card">
-              <p className="text-muted-foreground mb-4">You have no drafts.</p>
-              <Button variant="outline">Create Template</Button>
+          <TabsContent value="drafts" className="space-y-3 sm:space-y-4">
+            <div className="flex flex-col items-center justify-center p-8 sm:p-12 border border-dashed rounded-lg bg-card">
+              <p className="text-muted-foreground text-sm mb-4">You have no drafts.</p>
+              <Button variant="outline" size="sm">Create Template</Button>
             </div>
           </TabsContent>
         </Tabs>

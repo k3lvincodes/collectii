@@ -260,28 +260,28 @@ export function TaskDetailModal({ isOpen, onClose, task, onTaskUpdate }: TaskDet
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-            <DialogContent className="sm:max-w-xl max-h-[90vh] flex flex-col p-0 gap-0">
+            <DialogContent className="w-full max-w-[95vw] sm:max-w-xl max-h-[90vh] flex flex-col p-0 gap-0">
                 {task ? (
                     <>
-                        <DialogHeader className="p-6 pb-4">
+                        <DialogHeader className="p-4 sm:p-6 pb-3 sm:pb-4">
                             <div className="flex items-start justify-between">
                                 <div className="space-y-1 text-left">
-                                    <div className="flex items-center gap-2">
-                                        <Badge variant="outline">{task.project || "No Project"}</Badge>
-                                        <Badge variant={task.priority === 'High' ? 'destructive' : 'secondary'}>
+                                    <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                                        <Badge variant="outline" className="text-[10px] sm:text-xs">{task.project || "No Project"}</Badge>
+                                        <Badge variant={task.priority === 'High' ? 'destructive' : 'secondary'} className="text-[10px] sm:text-xs">
                                             {task.priority || "Normal"}
                                         </Badge>
                                     </div>
-                                    <DialogTitle className="text-xl font-bold leading-normal mt-2">{task.title}</DialogTitle>
+                                    <DialogTitle className="text-base sm:text-lg md:text-xl font-bold leading-normal mt-2">{task.title}</DialogTitle>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4 text-xs sm:text-sm text-muted-foreground mt-2">
                                 <div className="flex items-center gap-1">
-                                    <Calendar className="h-4 w-4" />
+                                    <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                                     <span>Due {task.deadline ? new Date(task.deadline).toLocaleDateString() : (task.dueDate || "No Date")}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
-                                    <User className="h-4 w-4" />
+                                    <User className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                                     <span>Assigned to You</span>
                                 </div>
                             </div>
@@ -289,29 +289,29 @@ export function TaskDetailModal({ isOpen, onClose, task, onTaskUpdate }: TaskDet
 
                         <Separator />
 
-                        <div className="flex-1 px-6 overflow-y-auto">
-                            <div className="space-y-6 py-6">
+                        <div className="flex-1 px-4 sm:px-6 overflow-y-auto">
+                            <div className="space-y-4 sm:space-y-6 py-4 sm:py-6">
 
                                 {/* Description */}
-                                <div className="space-y-3">
-                                    <h3 className="font-semibold text-base">Description</h3>
-                                    <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                                <div className="space-y-2 sm:space-y-3">
+                                    <h3 className="font-semibold text-sm sm:text-base">Description</h3>
+                                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
                                         {task.description || "No description provided."}
                                     </p>
                                 </div>
 
                                 {/* Deliverables */}
                                 {deliverables.length > 0 && (
-                                    <div className="space-y-3">
+                                    <div className="space-y-2 sm:space-y-3">
                                         <div className="flex items-center justify-between">
-                                            <h3 className="font-semibold text-base">Deliverables</h3>
-                                            <span className="text-xs text-muted-foreground">0/{deliverables.length} Completed</span>
+                                            <h3 className="font-semibold text-sm sm:text-base">Deliverables</h3>
+                                            <span className="text-[10px] sm:text-xs text-muted-foreground">0/{deliverables.length} Completed</span>
                                         </div>
-                                        <div className="space-y-2">
+                                        <div className="space-y-1.5 sm:space-y-2">
                                             {deliverables.map((item: string, i: number) => (
-                                                <div key={i} className="flex items-center space-x-2 border rounded-lg p-3 hover:bg-muted/50 transition-colors">
-                                                    <CheckSquare className="h-4 w-4" />
-                                                    <span className="text-sm font-medium">{item}</span>
+                                                <div key={i} className="flex items-center space-x-2 border rounded-lg p-2 sm:p-3 hover:bg-muted/50 transition-colors">
+                                                    <CheckSquare className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" />
+                                                    <span className="text-xs sm:text-sm font-medium">{item}</span>
                                                 </div>
                                             ))}
                                         </div>
@@ -320,16 +320,16 @@ export function TaskDetailModal({ isOpen, onClose, task, onTaskUpdate }: TaskDet
 
                                 {/* Attachments */}
                                 {attachments.length > 0 && (
-                                    <div className="space-y-3">
-                                        <h3 className="font-semibold text-base">Attachments</h3>
-                                        <div className="grid grid-cols-2 gap-3">
+                                    <div className="space-y-2 sm:space-y-3">
+                                        <h3 className="font-semibold text-sm sm:text-base">Attachments</h3>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                                             {attachments.map((att: any) => (
                                                 <div key={att.id} className="flex items-center gap-2 p-2 border rounded-md hover:bg-muted/50 cursor-pointer">
-                                                    <div className="h-8 w-8 bg-blue-100 dark:bg-blue-900/20 rounded flex items-center justify-center text-blue-600">
-                                                        <Paperclip className="h-4 w-4" />
+                                                    <div className="h-7 w-7 sm:h-8 sm:w-8 bg-blue-100 dark:bg-blue-900/20 rounded flex items-center justify-center text-blue-600 shrink-0">
+                                                        <Paperclip className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                                                     </div>
-                                                    <div className="overflow-hidden">
-                                                        <a href={att.url} target="_blank" rel="noreferrer" className="text-xs font-medium truncate hover:underline">{att.name}</a>
+                                                    <div className="overflow-hidden min-w-0">
+                                                        <a href={att.url} target="_blank" rel="noreferrer" className="text-xs font-medium truncate block hover:underline">{att.name}</a>
                                                         <p className="text-[10px] text-muted-foreground">{att.size || 'Unknown size'}</p>
                                                     </div>
                                                 </div>
@@ -339,29 +339,29 @@ export function TaskDetailModal({ isOpen, onClose, task, onTaskUpdate }: TaskDet
                                 )}
 
                                 {/* Comments */}
-                                <div className="space-y-3">
+                                <div className="space-y-2 sm:space-y-3">
                                     <div className="flex items-center justify-between">
-                                        <h3 className="font-semibold text-base">Activity & Comments</h3>
-                                        <span className="text-xs text-muted-foreground">{comments.length} comments</span>
+                                        <h3 className="font-semibold text-sm sm:text-base">Activity & Comments</h3>
+                                        <span className="text-[10px] sm:text-xs text-muted-foreground">{comments.length} comments</span>
                                     </div>
-                                    <div className="space-y-4">
+                                    <div className="space-y-3 sm:space-y-4">
                                         {comments.length === 0 ? (
-                                            <p className="text-sm text-muted-foreground italic">No comments yet.</p>
+                                            <p className="text-xs sm:text-sm text-muted-foreground italic">No comments yet.</p>
                                         ) : (
                                             comments.map((comment) => (
-                                                <div key={comment.id} className="flex gap-3">
-                                                    <Avatar className="h-8 w-8">
+                                                <div key={comment.id} className="flex gap-2 sm:gap-3">
+                                                    <Avatar className="h-6 w-6 sm:h-8 sm:w-8 shrink-0">
                                                         <AvatarImage src={comment.user?.avatar_url} />
-                                                        <AvatarFallback>{comment.user?.full_name?.charAt(0) || 'U'}</AvatarFallback>
+                                                        <AvatarFallback className="text-[10px] sm:text-xs">{comment.user?.full_name?.charAt(0) || 'U'}</AvatarFallback>
                                                     </Avatar>
-                                                    <div className="space-y-1">
-                                                        <div className="flex items-baseline justify-between gap-2">
-                                                            <span className="text-sm font-semibold">{comment.user?.full_name || comment.user?.email || 'Unknown User'}</span>
-                                                            <span className="text-xs text-muted-foreground">
+                                                    <div className="space-y-0.5 sm:space-y-1 min-w-0 flex-1">
+                                                        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5 sm:gap-2">
+                                                            <span className="text-xs sm:text-sm font-semibold truncate">{comment.user?.full_name || comment.user?.email || 'Unknown User'}</span>
+                                                            <span className="text-[10px] sm:text-xs text-muted-foreground shrink-0">
                                                                 {comment.created_at ? new Date(comment.created_at).toLocaleString() : 'No Date'}
                                                             </span>
                                                         </div>
-                                                        <p className="text-sm text-muted-foreground">{comment.content}</p>
+                                                        <p className="text-xs sm:text-sm text-muted-foreground break-words">{comment.content}</p>
                                                     </div>
                                                 </div>
                                             ))
@@ -372,15 +372,15 @@ export function TaskDetailModal({ isOpen, onClose, task, onTaskUpdate }: TaskDet
                             </div>
                         </div>
 
-                        <div className="p-6 pt-4 border-t mt-auto space-y-3 bg-background">
-                            <div className="flex gap-2 justify-end">
-                                <Button variant="outline" onClick={() => setIsExtensionModalOpen(true)}>
+                        <div className="p-3 sm:p-4 md:p-6 pt-3 sm:pt-4 border-t mt-auto space-y-2.5 sm:space-y-3 bg-background">
+                            <div className="flex flex-col sm:flex-row gap-2 sm:justify-end">
+                                <Button variant="outline" size="sm" className="h-8 sm:h-9 text-xs sm:text-sm order-2 sm:order-1" onClick={() => setIsExtensionModalOpen(true)}>
                                     {isPersonal ? 'Extend Deadline' : 'Request Extension'}
                                 </Button>
-                                <Button variant="outline" className="text-muted-foreground hover:text-destructive" onClick={() => handleUpdateStatus('dismissed')}>
+                                <Button variant="outline" size="sm" className="h-8 sm:h-9 text-xs sm:text-sm text-muted-foreground hover:text-destructive order-3 sm:order-2" onClick={() => handleUpdateStatus('dismissed')}>
                                     Dismiss
                                 </Button>
-                                <Button onClick={() => handleUpdateStatus('done')} className="bg-green-600 hover:bg-green-700 text-white">
+                                <Button size="sm" className="h-8 sm:h-9 text-xs sm:text-sm bg-green-600 hover:bg-green-700 text-white order-1 sm:order-3" onClick={() => handleUpdateStatus('done')}>
                                     Mark Complete
                                 </Button>
                             </div>
@@ -390,7 +390,7 @@ export function TaskDetailModal({ isOpen, onClose, task, onTaskUpdate }: TaskDet
                                     <input
                                         type="text"
                                         placeholder="Add a comment..."
-                                        className="w-full pl-3 pr-10 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-primary"
+                                        className="w-full pl-3 pr-10 py-2 text-xs sm:text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-primary"
                                         value={newComment}
                                         onChange={(e) => setNewComment(e.target.value)}
                                         onKeyDown={(e) => {
@@ -410,15 +410,15 @@ export function TaskDetailModal({ isOpen, onClose, task, onTaskUpdate }: TaskDet
                                     <Button
                                         size="icon"
                                         variant="ghost"
-                                        className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
+                                        className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 sm:h-7 sm:w-7"
                                         onClick={handleAttachClick}
                                         disabled={isUploading}
                                     >
-                                        {isUploading ? <span className="h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-transparent" /> : <Paperclip className="h-4 w-4" />}
+                                        {isUploading ? <span className="h-3 w-3 animate-spin rounded-full border-2 border-primary border-t-transparent" /> : <Paperclip className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
                                     </Button>
                                 </div>
-                                <Button onClick={handleSendComment} disabled={sendingComment}>
-                                    {sendingComment ? <span className="animate-spin mr-2">...</span> : "Send"}
+                                <Button size="sm" className="h-8 sm:h-9 text-xs sm:text-sm px-3" onClick={handleSendComment} disabled={sendingComment}>
+                                    {sendingComment ? <span className="animate-spin mr-1">...</span> : "Send"}
                                 </Button>
                             </div>
                         </div>

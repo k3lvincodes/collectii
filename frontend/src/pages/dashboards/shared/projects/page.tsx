@@ -197,52 +197,55 @@ export default function ProjectsPage() {
 
     return (
         <div className="min-h-screen bg-gray-50/50 dark:bg-background flex flex-col">
-            <div className="flex-1 p-6 max-w-[1600px] mx-auto w-full space-y-8">
+            <div className="flex-1 p-3 sm:p-4 md:p-6 max-w-[1600px] mx-auto w-full space-y-4 sm:space-y-6 md:space-y-8">
 
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Projects</h1>
-                        <p className="text-muted-foreground">Collaborate, track progress, and hit your milestones.</p>
+                <div className="flex items-center justify-between gap-2">
+                    <div className="min-w-0">
+                        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">Projects</h1>
+                        <p className="text-muted-foreground text-xs sm:text-sm hidden sm:block">Collaborate, track progress, and hit your milestones.</p>
                     </div>
-                    <Button onClick={() => setShowCreateModal(true)}>
-                        <Plus className="mr-2 h-4 w-4" /> New Project
+                    <Button size="sm" className="h-8 px-2 sm:px-3 shrink-0" onClick={() => setShowCreateModal(true)}>
+                        <Plus className="h-4 w-4 sm:mr-2" />
+                        <span className="hidden sm:inline">New Project</span>
                     </Button>
                 </div>
 
-                <Tabs defaultValue="active" className="space-y-6">
-                    <TabsList>
-                        <TabsTrigger value="active">Active Projects ({activeProjects.length})</TabsTrigger>
-                        <TabsTrigger value="onhold">On Hold ({onHoldProjects.length})</TabsTrigger>
-                        <TabsTrigger value="timeline">Timeline / Gantt</TabsTrigger>
-                        <TabsTrigger value="files">File Repository</TabsTrigger>
-                    </TabsList>
+                <Tabs defaultValue="active" className="space-y-3 sm:space-y-4 md:space-y-6">
+                    <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0">
+                        <TabsList className="w-max sm:w-auto inline-flex">
+                            <TabsTrigger value="active" className="text-xs sm:text-sm px-2.5 sm:px-3">Active ({activeProjects.length})</TabsTrigger>
+                            <TabsTrigger value="onhold" className="text-xs sm:text-sm px-2.5 sm:px-3">On Hold ({onHoldProjects.length})</TabsTrigger>
+                            <TabsTrigger value="timeline" className="text-xs sm:text-sm px-2.5 sm:px-3">Timeline</TabsTrigger>
+                            <TabsTrigger value="files" className="text-xs sm:text-sm px-2.5 sm:px-3">Files</TabsTrigger>
+                        </TabsList>
+                    </div>
 
-                    <TabsContent value="active" className="space-y-6">
+                    <TabsContent value="active" className="space-y-3 sm:space-y-4 md:space-y-6">
                         {activeProjects.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center p-12 border border-dashed rounded-lg bg-card">
-                                <p className="text-muted-foreground mb-4">No active projects.</p>
-                                <Button variant="outline" onClick={() => setShowCreateModal(true)}>Create Project</Button>
+                            <div className="flex flex-col items-center justify-center p-8 sm:p-12 border border-dashed rounded-lg bg-card">
+                                <p className="text-muted-foreground text-sm mb-4">No active projects.</p>
+                                <Button variant="outline" size="sm" onClick={() => setShowCreateModal(true)}>Create Project</Button>
                             </div>
                         ) : (
                             <ProjectCardsGrid projects={activeProjects} />
                         )}
                     </TabsContent>
 
-                    <TabsContent value="onhold" className="space-y-6">
+                    <TabsContent value="onhold" className="space-y-3 sm:space-y-4 md:space-y-6">
                         {onHoldProjects.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center p-12 border border-dashed rounded-lg bg-card">
-                                <p className="text-muted-foreground mb-4">No projects on hold.</p>
+                            <div className="flex flex-col items-center justify-center p-8 sm:p-12 border border-dashed rounded-lg bg-card">
+                                <p className="text-muted-foreground text-sm mb-4">No projects on hold.</p>
                             </div>
                         ) : (
                             <ProjectCardsGrid projects={onHoldProjects} />
                         )}
                     </TabsContent>
 
-                    <TabsContent value="timeline" className="space-y-6">
+                    <TabsContent value="timeline" className="space-y-3 sm:space-y-4 md:space-y-6">
                         <ProjectTimelineView />
                     </TabsContent>
 
-                    <TabsContent value="files" className="space-y-6">
+                    <TabsContent value="files" className="space-y-3 sm:space-y-4 md:space-y-6">
                         <ProjectFilesView />
                     </TabsContent>
                 </Tabs>
