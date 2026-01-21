@@ -148,14 +148,14 @@ export default function SettingsPage() {
   const basePath = location.pathname.split('/settings')[0] + '/settings';
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-[calc(100vh-4rem)]">
-      {/* Settings Sidebar - Hidden on mobile, fixed on desktop */}
-      <div className="hidden lg:block lg:fixed lg:top-16 lg:left-28 lg:w-64 lg:h-[calc(100vh-4rem)] bg-background z-10 p-6 border-r">
+    <div className="flex flex-col lg:flex-row min-h-[calc(100vh-4rem)] lg:h-[calc(100vh-4rem)] max-w-6xl mx-auto w-full lg:overflow-hidden">
+      {/* Settings Sidebar - Fixed height, no scroll (or internal scroll if needed) */}
+      <div className="hidden lg:block w-64 h-full bg-background z-10 p-6 border-r overflow-y-auto shrink-0">
         <SettingsSidebar items={navigationItems} basePath={basePath} />
       </div>
 
-      {/* Settings Content - Full width on mobile, offset on desktop */}
-      <div className="flex-1 p-4 sm:p-6 lg:ml-64 max-w-4xl">
+      {/* Settings Content - Expands and scrolls independently */}
+      <div className="flex-1 p-4 sm:p-6 h-full overflow-y-auto">
         <Routes>
           <Route index element={<Navigate to="profile" replace />} />
           <Route path="*" element={<SettingsContent items={navigationItems} contextType={currentContext.type} basePath={basePath} />} />

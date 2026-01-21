@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Loader2, Save, Upload, Github, Linkedin, Globe, Twitter } from 'lucide-react';
+import { Loader2, Save, Upload, Github, Linkedin, Globe, Twitter, Pen, Check } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,6 +25,14 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/components/ui/use-toast';
 import { createClient } from '@/lib/supabase/client';
@@ -40,6 +49,12 @@ const profileSchema = z.object({
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
+
+const AVATAR_COLORS = [
+    '#EF4444', '#F97316', '#F59E0B', '#EAB308', '#84CC16', '#22C55E',
+    '#10B981', '#14B8A6', '#06B6D4', '#0EA5E9', '#3B82F6', '#6366F1',
+    '#8B5CF6', '#A855F7', '#D946EF', '#EC4899', '#F43F5E', '#78716C'
+];
 
 export default function ProfileSettings() {
     const [isLoading, setIsLoading] = useState(false);
@@ -186,6 +201,35 @@ export default function ProfileSettings() {
         }
     };
 
+    const handleColorSelect = async (color: string) => {
+        setIsUploading(true);
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("No user found");
+
+            const { error: updateError } = await supabase
+                .from('profiles')
+                .update({ avatar_url: color })
+                .eq('id', user.id);
+
+            if (updateError) throw updateError;
+
+            setAvatarUrl(color);
+            toast({
+                title: "Avatar updated",
+                description: "Your profile color has been updated.",
+            });
+        } catch (error: any) {
+            toast({
+                title: "Update failed",
+                description: error.message || "Failed to update avatar color.",
+                variant: "destructive",
+            });
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
     return (
         <Card className="max-w-4xl mx-auto">
             <CardHeader className="p-4 sm:p-6">
@@ -196,40 +240,83 @@ export default function ProfileSettings() {
             </CardHeader>
             <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
                 <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
-                    <Avatar className="h-20 w-20 sm:h-24 sm:w-24">
-                        <AvatarImage src={avatarUrl || ''} />
-                        <AvatarFallback className="text-lg sm:text-xl">
-                            {form.watch('full_name')?.charAt(0) || 'U'}
-                        </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col gap-2 text-center sm:text-left">
-                        <h3 className="font-medium">Profile Picture</h3>
-                        <p className="text-sm text-muted-foreground">
-                            JPG, GIF or PNG. Max size of 2MB.
+                    <div className="relative group">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <div className="relative cursor-pointer">
+                                    <Avatar className="h-20 w-20 sm:h-24 sm:w-24 border-2 border-border shadow-sm transition-all group-hover:opacity-90">
+                                        {!avatarUrl?.startsWith('#') && (
+                                            <AvatarImage src={avatarUrl || ''} className="object-cover" />
+                                        )}
+                                        <AvatarFallback
+                                            className="text-2xl sm:text-3xl font-medium text-white"
+                                            style={{ backgroundColor: avatarUrl?.startsWith('#') ? avatarUrl : '#888' }}
+                                        >
+                                            {form.watch('full_name')?.charAt(0) || 'U'}
+                                        </AvatarFallback>
+                                    </Avatar>
+
+                                    {/* Overlay Pen Icon */}
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                        <Pen className="h-6 w-6 text-white" />
+                                    </div>
+
+                                    {/* Loading State Overlay */}
+                                    {isUploading && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-background/50 rounded-full">
+                                            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                                        </div>
+                                    )}
+                                </div>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="start" className="w-64 p-3">
+                                <DropdownMenuLabel>Change Profile Picture</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+
+                                <div className="grid grid-cols-6 gap-2 p-2">
+                                    {AVATAR_COLORS.map((color) => (
+                                        <button
+                                            key={color}
+                                            onClick={() => handleColorSelect(color)}
+                                            className={cn(
+                                                "w-6 h-6 rounded-full transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1",
+                                                avatarUrl === color && "ring-2 ring-primary ring-offset-2"
+                                            )}
+                                            style={{ backgroundColor: color }}
+                                            title={color}
+                                        />
+                                    ))}
+                                </div>
+
+                                <DropdownMenuSeparator />
+
+                                <div className="p-2">
+                                    <div className="relative">
+                                        <Button variant="outline" className="w-full relative" size="sm" disabled={isUploading}>
+                                            <Upload className="h-3.5 w-3.5 mr-2" />
+                                            Upload Image
+                                            <input
+                                                type="file"
+                                                className="absolute inset-0 opacity-0 cursor-pointer"
+                                                accept="image/*"
+                                                onChange={handleAvatarUpload}
+                                                disabled={isUploading}
+                                            />
+                                        </Button>
+                                    </div>
+                                    <p className="text-[10px] text-muted-foreground mt-2 text-center">
+                                        Max size 2MB. JPG, PNG, GIF.
+                                    </p>
+                                </div>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+
+                    <div className="flex flex-col gap-2 text-center sm:text-left pt-2">
+                        <h3 className="font-medium text-lg">Profile Picture</h3>
+                        <p className="text-sm text-muted-foreground max-w-[200px] sm:max-w-none">
+                            Click the avatar to change your profile picture or select a color.
                         </p>
-                        <div className="flex items-center justify-center sm:justify-start gap-2">
-                            <Button variant="outline" size="sm" className="relative cursor-pointer" disabled={isUploading}>
-                                {isUploading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Upload className="h-4 w-4 mr-2" />}
-                                Upload New
-                                <input
-                                    type="file"
-                                    className="absolute inset-0 opacity-0 cursor-pointer"
-                                    accept="image/*"
-                                    onChange={handleAvatarUpload}
-                                    disabled={isUploading}
-                                />
-                            </Button>
-                            {avatarUrl && (
-                                <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() => setAvatarUrl(null)}
-                                    className="text-destructive hover:text-destructive"
-                                >
-                                    Remove
-                                </Button>
-                            )}
-                        </div>
                     </div>
                 </div>
 
