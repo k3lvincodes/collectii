@@ -63,7 +63,7 @@ export function SiteHeader() {
       <div className="container flex h-14 items-center">
         <div className="flex items-center">
           <Link to="/" className="flex items-center space-x-2">
-            <span className="font-bold font-headline text-lg">Collectii<span className="text-primary">.</span></span>
+            <img src="/logo-full.png" alt="Collectii" className="h-12 w-auto" />
           </Link>
         </div>
 
@@ -153,7 +153,7 @@ export function SiteHeader() {
             <SheetContent side="left" className="pr-0">
               <SheetTitle><span className="sr-only">Mobile Menu</span></SheetTitle>
               <Link to="/" className="mr-6 flex items-center space-x-2">
-                <span className="font-bold font-headline text-lg">Collectii<span className="text-primary">.</span></span>
+                <img src="/logo-full.png" alt="Collectii" className="h-12 w-auto" />
               </Link>
               <div className="flex flex-col h-full">
                 <div className="flex flex-col space-y-3 pt-6">

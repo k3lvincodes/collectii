@@ -130,18 +130,9 @@ export function SidebarContent({
       )}>
         <Link to="/" className="flex items-center gap-2 font-semibold" onClick={onNavigate}>
           {!isExpanded ? (
-            <div className="bg-primary/10 p-2 rounded-xl">
-              <Package2 className="h-6 w-6 text-primary" />
-            </div>
+            <img src="/favicon.png" alt="Collectii" className="h-6 w-6 object-contain shrink-0" />
           ) : (
-            <>
-              <div className="bg-primary/10 p-2 rounded-xl">
-                <Package2 className="h-6 w-6 text-primary" />
-              </div>
-              <span className="font-headline text-lg truncate">
-                Collectii<span className="text-primary">.</span>
-              </span>
-            </>
+            <img src="/logo-full.png" alt="Collectii" className="h-14 w-auto ml-2 object-contain shrink-0" />
           )}
         </Link>
       </div>

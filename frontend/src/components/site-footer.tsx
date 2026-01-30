@@ -15,7 +15,7 @@ export function SiteFooter() {
       <div className="container py-12">
         <div className="grid md:grid-cols-2 gap-8">
           <div>
-            <h3 className="font-bold font-headline text-lg">Collectii<span className="text-primary">.</span></h3>
+            <img src="/logo-full.png" alt="Collectii" className="h-12 w-auto mb-4" />
             <p className="text-muted-foreground mt-2">A Modern Productivity & Workforce Platform.</p>
             <p className="text-xs text-muted-foreground mt-4">Made by Playsole</p>
           </div>
